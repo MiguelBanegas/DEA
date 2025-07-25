@@ -30,11 +30,12 @@
         position: absolute;
         background: #333;
         color: #fff;
-        padding: 4px 8px;
+        padding: 8px;
         border-radius: 4px;
-        font-size: 12px;
+        font-size: 15px;
         top: 100%;
-        left: 0;
+        /* left: 0; */
+        right: 0;
         white-space: nowrap;
         z-index: 10;
       }
@@ -75,7 +76,7 @@
       ol {
         list-style: none;
         padding-left: 0;
-        max-width: 950px;
+        max-width: 910px;
         margin: 0 auto;
         text-align: left;
       }
@@ -198,6 +199,7 @@
         top: 0;
         background: gray; /* igual que .table-dark */
         color: white;
+        font-size: 11px !important; /* Cambia 12px por el tamaño que prefieras */
         z-index: 2;
       }
       .pdf-export .table-responsive {
@@ -411,16 +413,14 @@
                 "
               >
                 <option value="Industrial" selected>Industrial</option>
-                <option value="Nave Industrial" selected>
-                  Nave Industrial
-                </option>
+                <option value="Nave Industrial">Nave Industrial</option>
                 <option value="Comercial">Comercial</option>
                 <option value="Residencial">Residencial</option>
                 <option value="Depósito">Depósito</option>
                 <option value="Oficinas">Oficinas</option>
                 <option value="Hospitalario">Usos Medicos</option>
                 <option value="Educativo">Educativo</option>
-                <option value="Org. Estatal" selected>Org. Estatal</option>
+                <option value="Org. Estatal">Org. Estatal</option>
                 <option value="Rural">Rural</option>
                 <option value="Otro">Otro</option>
               </select>
@@ -797,14 +797,14 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #fafafa;
+            background: white;
             margin-left: auto;
           "
         >
           <img
             src="./FIRMADIGITAL.png"
             alt="Firma digital"
-            style="max-height: 90px; max-width: 300px"
+            style="max-height: 100px; max-width: 300px"
           />
         </div>
       </div>

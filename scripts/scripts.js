@@ -31,6 +31,8 @@ function agregarFila() {
 
   // Contar filas existentes para autoincrementar el primer campo
   const numero = tabla.rows.length;
+  
+  
   const selects = {
     2: [
       "Lecho seco",
@@ -95,6 +97,7 @@ function agregarFila() {
     } else if (selects[i]) {
       const select = document.createElement("select");
       select.className = "form-select form-select-sm";
+      select.style.fontSize = "10px";
       selects[i].forEach((opcion) => {
         const opt = document.createElement("option");
         opt.value = opcion;
@@ -195,8 +198,8 @@ function guardarComoPDF() {
 
   setTimeout(() => {
     const opciones = {
-      margin: [5, 5, 5, 5],
-      filename: "planilla_medicion_tierra.pdf",
+      margin: [5, 5, 15, 5],
+      filename: "planillaRelevMedicRes900.pdf",
       image: { type: "jpeg", quality: 0.98 },
       html2canvas: { scale: 2, scrollY: 0, scrollX: 0 },
       jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
