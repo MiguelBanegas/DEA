@@ -4,161 +4,9 @@
 <head>
   <meta charset="UTF-8" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-  
+  <link rel="stylesheet" href="./css/styles.css">
+
   <title>PROTOCOLO DE MEDICIÓN</title>
-  <style>
-    body {
-      
-  min-width: 0 !important;
-  box-sizing: border-box !important;
-      font-family: Arial, sans-serif;
-    }
-
-    form {
-      width: 99%;
-      margin: 10px auto;
-      /* margin-top: 5px;
-      margin-left: 10px;
-      margin-right: 10px; */
-      border: 1px solid #ccc;
-      padding: 10px auto;
-      overflow-x: hidden;
-    }
-
-    h2 {
-      margin-top: 75px;
-      
-      text-align: center;
-      margin-bottom: 0px;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-    }
-    label {
-  font-size: 0.7em; /* Adjust this value as needed */
-} 
-
-    input[type="text"],
-    textarea {
-      width: 100%;
-      padding: 8px;
-      margin-bottom: 12px;
-      border: 1px solid #ccc;
-      resize: vertical;
-      /* Allow vertical resizing */
-      box-sizing: border-box;
-      text-transform: uppercase;
-      font-size: 10px;
-    }
-
-    /* textarea {
-    height: 100px;
-    resize: vertical;
-  } */
-    select {
-      width: 100%;
-      padding: 8px;
-      margin-bottom: 10px;
-      border: 1px solid #ccc;
-      box-sizing: border-box;
-      display: block;
-      font-size: 10px; /* Added to make options smaller */
-    }
-
-    .section-title {
-      background-color: #e0e0e0;
-      /* Gray background */
-      padding: 10px;
-      margin-top: 20px;
-      margin-bottom: 10px;
-      margin-top: 20px;
-      margin-bottom: 5px;
-      font-size: 12px; /* Adjust this value as needed */      
-      font-weight: bold;
-    }
-
-
-    hr {
-      border: none;
-      border-top: 1px solid #ccc;
-      margin: 20px 0;
-    }
-
-    .title {
-      background-color: gray;
-      /* Gray background */
-      font-size: 15px;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-
-    textarea {
-      resize: none;
-      /* Prevent manual resizing */
-      overflow-y: hidden;
-      /* Hide vertical scrollbar */
-      white-space: pre-wrap !important;
-    }
-
-    @media print {
-      @page {
-        size: A4;
-        margin: 20mm;
-      }
-
-      body {
-        margin: 0;
-        padding: 0;
-      }
-
-      .no-print {
-        display: none;
-      }
-
-      .date-footer::after {
-        content: "Fecha de impresión: " counter(date);
-      }
-
-      .page-number::after {
-        content: "Página " counter(page) " de " counter(pages);
-      }
-    }
-
-    .pdf-export .ocultar-botones {
-      display: none;
-    }
-
-    .pdf-export  {
-      width: 190mm !important;
-    max-width: 190mm !important;
-    }
-
-    .fecha-hora-impresion {
-      position: absolute;
-      top: 20px;
-      right: 40px;
-      font-size: 11px;
-      font-weight: bold;
-      color: #333;
-    }
-    .calendar-container, .calendar-day, .calendar-header {
-        display: block !important; /* O el display original de los elementos */
-        /* Agrega otras propiedades como padding, margin, border para consistencia */
-        padding: 0 !important;
-        margin: 0 !important;
-        border: none !important;
-      }
-    .imagen-adjunta {
-      max-width: 80%; /* Limita el ancho máximo del contenedor de la imagen */
-      margin-bottom: 10px; /* Espacio entre imágenes */
-    }
-    .imagen-adjunta img {
-      max-width: 100%; /* Asegura que la imagen no se desborde de su contenedor */
-      }
-  </style>
   
 </head>
 
@@ -356,10 +204,20 @@
     <option value="SI">SI</option>
     <option value="NO">NO</option>
   </select>
+
+  <div class="seccion-adjuntar-archivo">
+  <label>Adjuntar Imagen:</label>
+  <div>
+    <label for="imagen_adjunta" class="custom-file-upload-button">Elegir archivos</label>
+    <span id="file-upload-status"></span>
+  </div>
+ </div>
+
  <label for="imagen_adjunta">Adjuntar Imagen:</label>
   <input type="file" id="imagen_adjunta" name="imagen_adjunta" accept="image/*" multiple>
  <div id="imagenes_mostradas"></div>
   <div id="contenedor_imagenes_adjuntas"></div>
+
   <img src="img/FIRMADIGITAL.png" alt="Firma Digital" style="float: right; margin-right: 160px; width: 160px; height: auto;">
 
 </form>
@@ -369,7 +227,7 @@
   
   <button onclick="guardarComoPDF()" style="display: block;">Exportar a PDF</button>
   
-  <script src="scripts2.js"></script>   
+  <script src="./js/scripts3.js"></script>   
 </body>
 
 
