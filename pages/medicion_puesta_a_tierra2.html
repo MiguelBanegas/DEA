@@ -3,7 +3,10 @@
 
 <head>
   <meta charset="UTF-8" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- <link rel="shortcut icon" href="../img/LogoDEA2.png" type="image/x-icon"> -->
+  <script src="../recursos/html2pdf.bundle.min.js"></script>
+  <link href="../recursos/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="../css/styles.css">
 
   <title>PROTOCOLO DE MEDICIÓN</title>
@@ -17,23 +20,23 @@
       <h2 class="title">PROTOCOLO DE MEDICIÓN DE LA PUESTA A TIERRA Y CONTINUIDAD DE LAS MASAS</h2>
 
       <label for="razon_social">Razón Social:</label>
-      <input type="text" id="razon_social" name="razon_social" value="razon_social">
+      <input type="text" id="razon_social" name="razon_social" value="razon_social" class="form-control">
       <label for="cuit">C.U.I.T.:</label>
-      <input type="text" id="cuit" name="cuit" value="cuit">
+      <input type="text" id="cuit" name="cuit" value="cuit" class="form-control">
       <label for="direccion">Dirección:</label>
-      <input type="text" id="direccion" name="direccion" value="direccion">
+      <input type="text" id="direccion" name="direccion" value="direccion" class="form-control">
 
       <label for="localidad">Localidad:</label>
-      <input type="text" id="localidad" name="localidad" value="localidad">
+      <input type="text" id="localidad" name="localidad" value="localidad" class="form-control">
 
       <div style="display: flex; gap: 20px;">
         <div style="flex: 1;">
           <label for="cp">CP:</label>
-          <input type="text" id="cp" name="cp" value="cp">
+          <input type="text" id="cp" name="cp" value="cp" class="form-control">
         </div>
         <div style="flex: 1;">
           <label for="provincia">Provincia:</label>
-          <select id="provincia" name="provincia">
+          <select id="provincia" name="provincia" class="form-select">
             <option value="">Seleccionar Provincia</option>
             <option value="Buenos Aires">Buenos Aires</option>
             <option value="Catamarca">Catamarca</option>
@@ -67,16 +70,16 @@
       <div class="section-title">DATOS DEL PROFESIONAL QUE VA REALIZAR LAS MEDICIONES</div>
 
       <label for="nombre_profesional">Nombre:</label>
-      <input type="text" id="nombre_profesional" name="nombre_profesional" value="nombre_profesional">
+      <input type="text" id="nombre_profesional" name="nombre_profesional" value="nombre_profesional" class="form-control">
 
       <label for="apellido_profesional">Apellido:</label>
-      <input type="text" id="apellido_profesional" name="apellido_profesional" value="apellido_profesional">
+      <input type="text" id="apellido_profesional" name="apellido_profesional" value="apellido_profesional" class="form-control">
 
       <label for="matricula_profesional">Matrícula N°:</label>
-      <input type="text" id="matricula_profesional" name="matricula_profesional" value="matricula_profesional">
+      <input type="text" id="matricula_profesional" name="matricula_profesional" value="matricula_profesional" class="form-control">
 
       <label for="incumbencias_electricidad">Posee incumbencias específicas en electricidad (si /no ):</label>
-      <select id="incumbencias_especificas" name="incumbencias_especificas">
+      <select id="incumbencias_especificas" name="incumbencias_especificas" class="form-select">
         <option value="Técnico eléctrico">Técnico eléctrico</option>
         <option value="Técnico Electromecánico">Técnico Electromecánico</option>
         <option value="Ingeniero eléctrico">Ingeniero eléctrico</option>
@@ -84,31 +87,31 @@
       </select>
 
       <label for="documentacion_incumbencias">Presenta documentación de incumbencias específicas ( Si / No ):</label>
-      <select id="documentacion_incumbencias" name="documentacion_incumbencias">
+      <select id="documentacion_incumbencias" name="documentacion_incumbencias" class="form-select">
         <option value="SI">SI</option>
         <option value="NO">NO</option>
       </select>
       <label for="rango_kv">Hasta que rango de KV (13,2 KV técnicos / mas de 13,2 KV inges.):</label>
-      <select id="rango_kv" name="rango_kv">
+      <select id="rango_kv" name="rango_kv" class="form-select">
         <option value="13.2">13,2 KV técnicos</option>
         <option value="mas_13.2">mas de 13,2 KV inges.</option>
       </select>
 
       <label for="pago_matricula">Presenta documentaci&oacute;n de pago de matr&iacute;cula al d&iacute;a ( si / no
         ):</label>
-      <select id="pago_matricula" name="pago_matricula">
+      <select id="pago_matricula" name="pago_matricula" class="form-select">
         <option value="SI">SI</option>
         <option value="NO">NO</option>
       </select>
 
       <label for="seguro_accidentes">¿Posee seguro de accidentes personales? ( SI / NO ):</label>
- <select id="seguro_accidentes" name="seguro_accidentes">
+ <select id="seguro_accidentes" name="seguro_accidentes" class="form-select">
  <option value="SI">SI</option>
  <option value="NO">NO</option>
  </select>
 
  <label for="pago_seguro">¿Presenta la documentación de pago al día del seguro de accidentes personales? ( Si / No ):</label>
- <select id="pago_seguro" name="pago_seguro">
+ <select id="pago_seguro" name="pago_seguro" class="form-select">
  <option value="SI">SI</option>
  <option value="NO">NO</option>
  </select>
@@ -118,19 +121,19 @@
       <div class="section-title">DATOS DEL INSTRUMENTO CON EL QUE VAN REALIZAR LAS MEDICIONES</div>
 
       <label for="marca_instrumento">Marca:</label>
-      <input type="text" id="marca_instrumento" name="marca_instrumento" value="marca_instrumento">
+      <input type="text" id="marca_instrumento" name="marca_instrumento" value="marca_instrumento" class="form-control">
 
       <label for="modelo_instrumento">Modelo:</label>
-      <input type="text" id="modelo_instrumento" name="modelo_instrumento" value="modelo_instrumento">
+      <input type="text" id="modelo_instrumento" name="modelo_instrumento" value="modelo_instrumento" class="form-control">
 
       <label for="numero_serie_instrumento">Numero de serie:</label>
-      <input type="text" id="numero_serie_instrumento" name="numero_serie_instrumento" value="numero_serie_instrumento">
+      <input type="text" id="numero_serie_instrumento" name="numero_serie_instrumento" value="numero_serie_instrumento" class="form-control">
 
       <div style="display: flex; gap: 20px;">
         <div style="flex: 1;">
           <label for="tipo_instrumento">Tipo ( MFT / Telurímetro / Probador de IDs / MFT de PAT / Otro
             ):</label>
-          <select id="tipo_instrumento" name="tipo_instrumento">
+          <select id="tipo_instrumento" name="tipo_instrumento" class="form-select">
             <option value="MFT">MFT</option>
             <option value="Telurímetro">Telurímetro</option>
             <option value="Probador de IDs">Probador de IDs</option>
@@ -140,7 +143,7 @@
         </div>
         <div style="flex: 1;">
           <label for="cumple_iec">Cumple con IEC 61557 ( Si / No ):</label>
-          <select id="cumple_iec" name="cumple_iec">
+          <select id="cumple_iec" name="cumple_iec" class="form-select">
             <option value="SI">SI</option>
             <option value="NO">NO</option>
           </select>
@@ -151,14 +154,14 @@
   
   <div style="flex-grow: 1; margin-right: 10px;">
     <label for="certificado_fabricante">Posee certificado de calibraci&oacute;n del fabricante ( Si / No ):</label>
-    <select id="certificado_fabricante" name="certificado_fabricante" style="width: 100%;">
+    <select id="certificado_fabricante" name="certificado_fabricante" class="form-select">
       <option value="SI">SI</option>
       <option value="NO">NO</option>
     </select>
   </div>
   <div style="flex-grow: 1;">
     <label for="condiciones_uso">El instrumento se encuentra en condiciones de uso igual a nuevo ( Si / No ):</label>
-    <select id="condiciones_uso" name="condiciones_uso" style="width: 100%;">
+    <select id="condiciones_uso" name="condiciones_uso" class="form-select">
       <option value="SI">SI</option>
       <option value="NO">NO</option>
     </select>
@@ -170,37 +173,37 @@
   <div style="display: flex; justify-content: space-between;">
     <div style="flex-grow: 1; margin-right: 10px;">
       <label for="fecha_medicion">Fecha de la medici&oacute;n:</label>
-      <input type="date" id="fecha_medicion" name="fecha_medicion">
+      <input type="date" id="fecha_medicion" name="fecha_medicion" class="form-control">
     </div>
     <div style="flex-grow: 1; margin-right: 10px;">
       <label for="hora_inicio">Hora de inicio:</label>
-      <input type="time" id="hora_inicio" name="hora_inicio">
+      <input type="time" id="hora_inicio" name="hora_inicio" class="form-control">
     </div>
     <div style="flex-grow: 1;">
       <label for="hora_finalizacion">Hora finalización:</label>
-      <input type="time" id="hora_finalizacion" name="hora_finalizacion">
+      <input type="time" id="hora_finalizacion" name="hora_finalizacion" class="form-control">
     </div>
   </div>
 
 
 
   <label for="metodologia">Metodología utilizada:</label>
-  <textarea id="metodologia" name="metodologia"></textarea>
+  <textarea id="metodologia" name="metodologia" class="form-control"></textarea>
 
 
   <label for="observaciones">Observaciones:</label>
-  <textarea id="observaciones" name="observaciones"></textarea>
+  <textarea id="observaciones" name="observaciones" class="form-control"></textarea>
   <!-- <hr> -->
   <div class="section-title">Documentación que se Adjunta a la Medición</div>
 
   <label for="certificado_calibracion">Certificado de Calibración:</label>
-  <select id="certificado_calibracion" name="certificado_calibracion">
+  <select id="certificado_calibracion" name="certificado_calibracion" class="form-select">
     <option value="SI">SI</option>
     <option value="NO">NO</option>
   </select>
 
   <label for="plano_croquis">Plano o croquis:</label>
-  <select id="plano_croquis" name="plano_croquis">
+  <select id="plano_croquis" name="plano_croquis" class="form-select">
     <option value="SI">SI</option>
     <option value="NO">NO</option>
   </select>
@@ -208,12 +211,13 @@
   <div class="seccion-adjuntar-archivo">
   <label>Adjuntar Imagen:</label>
   <div>
-    <label for="imagen_adjunta" class="custom-file-upload-button">Elegir archivos</label>
+    <label for="imagen_adjunta" class=" btn btn-primary ms-3 mb-3">Elegir Imagen/s</label>
     <span id="file-upload-status"></span>
   </div>
  </div>
 
-  <input type="file" id="imagen_adjunta" name="imagen_adjunta" accept="image/*" multiple>
+ <!-- <label for="imagen_adjunta">Adjuntar Imagen:</label> -->
+  <input type="file" id="imagen_adjunta" name="imagen_adjunta" accept="image/*" multiple class="form-control">
  <div id="imagenes_mostradas"></div>
   <div id="contenedor_imagenes_adjuntas"></div>
 
@@ -224,13 +228,13 @@
   </div>
   
   
-  <!-- <button onclick="guardarComoPDF()" style="display: block;">Exportar a PDF</button> -->
   <button class="btn btn-success ms-3 mb-3" onclick="guardarComoPDF()">Exportar a PDF</button>
+  
   <script src="../js/scripts3.js"></script>   
   <div id="loading-indicator" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: rgba(255, 255, 255, 0.8); padding: 20px; border-radius: 10px; z-index: 1000;">
-    Generando PDF, por favor espera...
-    <!-- Puedes agregar un spinner CSS o una imagen aquí -->
-  </div>
+      Generando PDF, por favor espera...
+      <!-- Puedes agregar un spinner CSS o una imagen aquí -->
+    </div>
 </body>
 
 
