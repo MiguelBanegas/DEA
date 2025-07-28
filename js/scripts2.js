@@ -87,6 +87,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Function to save the form as PDF
 function guardarComoPDF() {
+  // Muestra el indicador de carga
+  document.getElementById('loading-indicator').style.display = 'block';
+
   window.scrollTo(0, 0);
   const contenedor = document.getElementById("exportPDF");
   const tabla = document.getElementById("medicionTabla"); // Assuming you have a table with this ID if needed for page breaks
@@ -157,6 +160,19 @@ function guardarComoPDF() {
           tabla.classList.remove("ocultar-eliminar");
         }
         fechaDiv.remove(); // Quita la fecha/hora del DOM
+        // Oculta el indicador de carga después de que se complete la descarga
+        document.getElementById('loading-indicator').style.display = 'none';
+      })
+      .catch((err) => {
+        console.error('Error al generar el PDF:', err);
+        contenedor.classList.remove("pdf-export", "ocultar-botones");
+        if (tabla) {
+          tabla.classList.remove("ocultar-eliminar");
+        }
+        fechaDiv.remove();
+        alert("Error al generar el PDF: " + err);
+        // Asegúrate de ocultar el indicador incluso si hay un error
+        document.getElementById('loading-indicator').style.display = 'none';
       });
   }, 350); // Use a small delay to ensure DOM updates
 }

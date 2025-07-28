@@ -149,6 +149,9 @@ function agregarFila() {
 }
 
 function guardarComoPDF() {
+  // Muestra el indicador de carga
+  document.getElementById('loading-indicator').style.display = 'block';
+
   window.scrollTo(0, 0);
   const contenedor = document.getElementById("exportPDF");
   const tabla = document.getElementById("medicionTabla");
@@ -186,7 +189,7 @@ function guardarComoPDF() {
       position: absolute;
       top: 20px;
       right: 40px;
-      font-size: 11px;
+      font-size: 11px;\
       font-weight: bold;
       color: #333;
     }
@@ -231,20 +234,27 @@ function guardarComoPDF() {
         const styleTag = document.getElementById("pdf-pagebreak-style");
         if (styleTag) styleTag.remove();
         fechaDiv.remove(); // Quita la fecha/hora del DOM
+        // Oculta el indicador de carga después de que se complete la descarga
+        document.getElementById('loading-indicator').style.display = 'none';
       })
       .catch((err) => {
+        console.error('Error al generar el PDF:', err);
         contenedor.classList.remove("pdf-export", "ocultar-botones");
         tabla.classList.remove("ocultar-eliminar");
         const styleTag = document.getElementById("pdf-pagebreak-style");
         if (styleTag) styleTag.remove();
         fechaDiv.remove();
         alert("Error al generar el PDF: " + err);
-        console.error(err);
+        // Asegúrate de ocultar el indicador incluso si hay un error
+        document.getElementById('loading-indicator').style.display = 'none';
       });
   }, 700); // Usa 350ms para asegurar el reflow
 }
 
 function imprimirPDF() {
+  // Muestra el indicador de carga
+  document.getElementById('loading-indicator').style.display = 'block';
+
   const contenedor = document.getElementById("exportPDF");
   const tabla = document.getElementById("medicionTabla");
   const tableResponsive = contenedor.querySelector(".table-responsive");
@@ -328,6 +338,8 @@ function imprimirPDF() {
       if (removedResponsive && tableResponsive) {
         tableResponsive.classList.add("table-responsive");
       }
+      // Oculta el indicador de carga
+      document.getElementById('loading-indicator').style.display = 'none';
     }, 500);
   };
 }
