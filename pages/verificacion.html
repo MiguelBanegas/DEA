@@ -2,8 +2,9 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <link rel="shortcut icon" href=".,/img/LogoDEA2.png" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="../img/LogoDEA2.png" type="image/x-icon">
+    
     <title>Planilla de Relevamiento y Medición según Res900/15</title>
     <!-- Bootstrap CSS -->
    <!--  <link -->
@@ -685,12 +686,14 @@
             </tbody>
           </table>
         </div>
-        <button class="btn btn-primary me-2" onclick="agregarFila()">
+        <button class="btn btn-primary ms-3 mb-3" onclick="agregarFila()">
           Agregar Fila
         </button>
-        <button class="btn btn-success ms-3 mb-3 onclick="guardarComoPDF()">
+       <!--  <button class="btn btn-success ms-3 mb-3 onclick="guardarComoPDF()">
           Guardar como PDF
-        </button>
+        </button> -->
+        <button class="btn btn-success ms-3 mb-3" onclick="guardarComoPDF()">Exportar a PDF</button>
+  
         <!-- <button class="btn btn-success" onclick="imprimirPDF()"> -->
         <!--   Guardar como PDF -->
         <!-- </button> -->
@@ -815,7 +818,7 @@
     <!-- Bootstrap JS (opcional, solo si usas componentes JS de Bootstrap) -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> -->
   <script src="../recursos/bootstrap.min.js"></script>
-    <script src="../js/scripts.js"></script>   
+  <script src="../js/scripts.js"></script>   
     <div id="loading-indicator" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: rgba(255, 255, 255, 0.8); padding: 20px; border-radius: 10px; z-index: 1000;">
       Generando PDF, por favor espera...
       <!-- Puedes agregar un spinner CSS o una imagen aquí -->
