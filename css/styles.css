@@ -15,7 +15,12 @@
       padding: 10px auto;
       overflow-x: hidden;
     }
-
+    .logo {
+      display: block;
+      margin: 1rem auto;
+      max-width: 580px;
+      border-radius: 5%;
+    }
     h2 {
       margin-top: 75px;
       
@@ -185,4 +190,25 @@
     /* Oculta el botón "Eliminar" de cada imagen durante la exportación a PDF */
     .ocultar-botones .imagen-adjunta button {
         display: none;
+    }
+    .text-readable {
+      text-align: center;
+      line-height: 1.6;
+      font-weight: bold;
+      font-style: italic;
+    }
+    .social-icons a {
+      color: #343a40; /* Un color gris oscuro */
+      transition: color 0.3s ease-in-out;
+    }
+    
+    .social-icons a:hover {
+      color: #007bff; /* Color primario de Bootstrap */
+    }
+    .service-image {
+      max-width: 450px; /* Ajusta este valor para cambiar el tamaño máximo */
+      width: 100%;
+      margin: 0 auto;
+      display: block;
+      height: auto;
     }
