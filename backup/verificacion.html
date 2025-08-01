@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Planilla de Relevamiento y Medición según Res900/15</title>
+    <!-- Bootstrap CSS -->
+   <!--  <link -->
+   <!--    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" -->
+   <!--     -->
+   <!--    rel="stylesheet" -->
+   <!--  /> -->
+    <link href="./recursos/bootstrap.min.css" rel="stylesheet" />
+    
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.2/html2pdf.bundle.min.js"></script> -->
+    <script src="./recursos/html2pdf.bundle.min.js"></script>
+    <style>
+      .titulo-relevamiento {
+        font-size: 20px !important; /* Ajusta el tamaño que prefieras */
+        font-weight: bold !important;
+      }
+      td[contenteditable] {
+        background-color: #ffffdd;
+      }
+      th[data-tooltip] {
+        position: relative;
+        cursor: help;
+      }
+      th[data-tooltip]:hover::after {
+        content: attr(data-tooltip);
+        position: absolute;
+        background: #333;
+        color: #fff;
+        padding: 8px;
+        border-radius: 4px;
+        font-size: 15px;
+        top: 100%;
+        /* left: 0; */
+        right: 0;
+        white-space: nowrap;
+        z-index: 10;
+      }
+      .oculto-espacio {
+        color: transparent;
+        background: transparent;
+        border: none;
+        pointer-events: none;
+        user-select: none;
+      }
+      .ocultar-eliminar th:last-child,
+      .ocultar-eliminar td:last-child {
+        display: none !important;
+      }
+      .ocultar-botones button {
+        display: none !important;
+      }
+      .pdf-export table {
+        font-size: 10px !important; /* Tamaño de fuente global para la tabla en PDF */
+        table-layout: fixed !important;
+      }
+      .pdf-export th,
+      .pdf-export td,
+      .pdf-export select,
+      .pdf-export input {
+        font-size: 10px !important; /* Tamaño de fuente igual para cabeceras y celdas */
+        word-break: break-word !important;
+        white-space: normal !important;
+        min-width: 10mm;
+        vertical-align: middle !important;
+        padding: 2px 4px !important;
+      }
+      h3 {
+        margin-top: 0 !important;
+        margin-bottom: 1rem;
+        padding: 10px 0 8px 0;
+      }
+      ol {
+        list-style: none;
+        padding-left: 0;
+        max-width: 910px;
+        margin: 0 auto;
+        text-align: left;
+      }
+      .pdf-export select.form-select {
+        background-image: none !important;
+      }
+      /* Negrita y tamaño especial para columnas 1, 2 y 6 */
+      th:nth-child(1),
+      td:nth-child(1),
+      th:nth-child(2),
+      td:nth-child(2),
+      th:nth-child(6),
+      td:nth-child(6) {
+        font-weight: bold;
+        font-size: 12px !important;
+      }
+      /* Anchos de columnas para PDF */
+      .pdf-export #contenedorTabla,
+      .pdf-export .container-fluid,
+      .pdf-export .table-responsive,
+      .pdf-export table {
+        width: 190mm !important;
+        max-width: 190mm !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+      }
+      .pdf-export th,
+      .pdf-export td {
+        font-size: 10px !important;
+        word-break: break-word !important;
+        white-space: normal !important;
+        vertical-align: middle !important;
+        padding: 2px 4px !important;
+      }
+
+      /* Ajuste de anchos para cada columna (ajusta según tu contenido real) */
+      .pdf-export th:nth-child(1),
+      .pdf-export td:nth-child(1) {
+        /* N° de toma de tierra */
+        width: 12mm;
+      }
+      .pdf-export th:nth-child(2),
+      .pdf-export td:nth-child(2) {
+        /* Sector */
+        width: 14mm;
+      }
+      .pdf-export th:nth-child(3),
+      .pdf-export td:nth-child(3) {
+        /* Descripción del terreno */
+        width: 18mm;
+      }
+      .pdf-export th:nth-child(4),
+      .pdf-export td:nth-child(4) {
+        /* Uso de la puesta a tierra */
+        width: 15mm;
+      }
+      .pdf-export th:nth-child(5),
+      .pdf-export td:nth-child(5) {
+        /* Esquema de conexión a tierra */
+        width: 15mm;
+      }
+      .pdf-export th:nth-child(6),
+      .pdf-export td:nth-child(6) {
+        /* Valor obtenido (Ω) */
+        width: 22mm;
+        font-weight: bold;
+        font-size: 12px !important;
+      }
+      .pdf-export th:nth-child(7),
+      .pdf-export td:nth-child(7) {
+        /* Cumple (SI/NO) */
+        width: 22mm;
+      }
+      .pdf-export th:nth-child(8),
+      .pdf-export td:nth-child(8) {
+        /* Es continuo y permanente */
+        width: 22mm;
+      }
+      .pdf-export th:nth-child(9),
+      .pdf-export td:nth-child(9) {
+        /* Capacidad de conducir corriente de falla */
+        width: 22mm;
+      }
+      .pdf-export th:nth-child(10),
+      .pdf-export td:nth-child(10) {
+        /* Dispositivos contra contactos indirectos */
+        width: 8mm;
+      }
+      .pdf-export th:nth-child(11),
+      .pdf-export td:nth-child(11) {
+        /* Desconexión automática en caso de falla */
+        width: 8mm;
+      }
+      /* La columna 12 (eliminar) se oculta en PDF */
+      .ocultar-eliminar th:last-child,
+      .ocultar-eliminar td:last-child {
+        display: none !important;
+      }
+      .pdf-export ol,
+      .pdf-export ol li {
+        page-break-inside: auto !important;
+        break-inside: auto !important;
+        page-break-before: auto !important;
+        break-before: auto !important;
+        page-break-after: auto !important;
+        break-after: auto !important;
+        font-size: 9px !important;
+        line-height: 1.2 !important;
+      }
+      .table-responsive {
+        max-height: 70vh; /* o el alto que prefieras */
+        max-width: auto;
+        min-width: 0 !important; /* Evita que se aplaste la tabla */
+        overflow-y: auto;
+        overflow-x: visible; /* Evita el scroll horizontal */;
+      }
+
+      #medicionTabla thead th {
+        position: sticky;
+        top: 0;
+        background: gray; /* igual que .table-dark */
+        color: white;
+        font-size: 11px !important; /* Cambia 12px por el tamaño que prefieras */
+        z-index: 2;
+      }
+      .pdf-export .table-responsive {
+        max-height: none !important;
+        max-width: auto !important;
+        overflow-x: visible  !important;
+      }
+      #exportPDF {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+      }
+      .pdf-export .pdf-pagebreak {
+        page-break-before: always !important;
+        break-before: always !important;
+        height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        background: none !important;
+      }
+      input[type="text"],
+      input[type="date"],
+      input[type="time"],
+      select {
+        text-transform: uppercase !important;
+      }
+      .pdf-export .col-7 b,
+      .pdf-export .col-5 b,
+      .pdf-export .col-md-6 b,
+      .pdf-export .border.rounded.p-2 > .mb-1 > b,
+      .pdf-export label,
+      .pdf-export .border.rounded.p-2 > .mb-1 {
+        font-size: 10px !important;
+        font-weight: 700 !important;
+      }
+
+      .pdf-export .col-5 [style*="font-size:1.15rem"] {
+        font-size: 12px !important;
+      }
+      .pdf-export .referencias-lista p {
+        font-size: 9px !important;
+        line-height: 1.2 !important;
+        margin-bottom: 4px;
+        page-break-inside: auto !important;
+        break-inside: auto !important;
+      }
+      .tabla-pdf-chica {
+  width: 170mm !important;
+  font-size: 9px !important;
+}
+
+      /* Solo para pantalla, NO PDF */
+      #contenedorTabla,
+      .container-fluid,
+      .table-responsive,
+      table {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+        overflow-x: auto;
+      }
+
+      /* .pdf-export b[style*="font-size: 1.75rem"] { */
+      /*   font-size: 25px !important; */
+      /* } */
+
+      .pdf-export h4,
+      .pdf-export h5 {
+        font-size: 11px !important;
+        font-weight: 700 !important;
+        margin-bottom: 8px !important;
+      }
+      .pdf-export .titulo-relevamiento {
+        font-size: 28px !important; /* Ajusta el tamaño que prefieras */
+        font-weight: bold !important;
+      }
+      .pdf-export img[alt="Logo"] {
+        height: 60px !important;
+        width: auto !important;
+      }
+      #medicionTabla thead th a {
+        color: #fff !important; /* Color blanco, puedes cambiarlo */
+        text-decoration: underline; /* Opcional: subrayado */
+      }
+
+      #medicionTabla thead th a:hover {
+        color: #ffe082 !important; /* Color al pasar el mouse, opcional */
+      }
+    </style>
+  </head>
+  <body>
+    <div id="exportPDF">
+      <!-- Logo -->
+      <!--  <div style="width:100%; display:flex; align-items:flex-start; margin-bottom: 8px;"> -->
+      <!--    <img src="./LogoDEA2.png" alt="Logo" style="height:110px; width:auto; margin-top:2px; margin-left:8px;"> -->
+      <!--  </div> -->
+      <!-- Cabecera y checklist -->
+      <div class="row align-items-start mb-3" style="margin: 20px 20px">
+        <!-- Datos cliente -->
+        <div class="col-5 col-md-5">
+          <div
+            style="
+              width: 100%;
+              display: flex;
+              align-items: flex-start;
+              margin-bottom: 8px;
+            "
+          >
+            <img
+              src="./LogoDEA2.png"
+              alt="Logo"
+              style="height: 90px; width: auto; margin-top: 0; margin-left: 8px"
+            />
+          </div>
+          <div style="margin-left: 10px; margin-top: 8px">
+            <div>
+              <b>Cliente:</b>
+              <input
+                type="text"
+                style="
+                  font-weight: bold;
+                  border: none;
+                  border-bottom: 1px solid #333;
+                  outline: none;
+                  width: 100%;
+                  min-width: 0;
+                "
+                placeholder="Nombre del cliente"
+              />
+            </div>
+            <div>
+              <b>Dirección:</b>
+              <input
+                type="text"
+                style="
+                  border: none;
+                  border-bottom: 1px solid #333;
+                  outline: none;
+                  width: 100%;
+                  min-width: 0;
+                "
+                placeholder="Dirección"
+              />
+            </div>
+            <div>
+              <b>Localidad:</b>
+              <input
+                type="text"
+                style="
+                  border: none;
+                  border-bottom: 1px solid #333;
+                  outline: none;
+                  width: 100%;
+                  min-width: 0;
+                "
+                placeholder="Localidad"
+              />
+            </div>
+            <div>
+              <b>Pcia.:</b>
+              <input
+                type="text"
+                style="
+                  border: none;
+                  border-bottom: 1px solid #333;
+                  outline: none;
+                  width: 100%;
+                  min-width: 0;
+                "
+                placeholder="Provincia"
+              />
+            </div>
+            <div>
+              <b>CUIT:</b>
+              <input
+                type="text"
+                style="
+                  border: none;
+                  border-bottom: 1px solid #333;
+                  outline: none;
+                  width: 100%;
+                  min-width: 0;
+                "
+                placeholder="CUIT"
+              />
+            </div>
+          </div>
+        </div>
+        <!-- Columna checklist -->
+        <div class="col-7 col-md-7">
+          <div
+            class="border rounded p-2"
+            style="background: #f8f9fa; margin-right: 8px; margin-top: 8px"
+          >
+            <div class="mb-1">
+              <b class="titulo-relevamiento"
+                >Relevamiento de Instalación Eléctrica</b
+              >
+            </div>
+            <div class="mb-1"><b>Check list</b></div>
+            <div class="mb-1">
+              Tipo de instalación:
+              <select
+                style="
+                  border: none;
+                  border-bottom: 1px solid #333;
+                  outline: none;
+                  width: 100%;
+                  min-width: 0;
+                "
+              >
+                <option value="Industrial" selected>Industrial</option>
+                <option value="Nave Industrial">Nave Industrial</option>
+                <option value="Comercial">Comercial</option>
+                <option value="Residencial">Residencial</option>
+                <option value="Depósito">Depósito</option>
+                <option value="Oficinas">Oficinas</option>
+                <option value="Hospitalario">Usos Medicos</option>
+                <option value="Educativo">Educativo</option>
+                <option value="Org. Estatal">Org. Estatal</option>
+                <option value="Rural">Rural</option>
+                <option value="Otro">Otro</option>
+              </select>
+            </div>
+            <div class="mb-1">
+              Sector:
+              <input
+                id="sectorInput"
+                type="text"
+                value="General"
+                style="
+                  border: none;
+                  border-bottom: 1px solid #333;
+                  outline: none;
+                  width: 100%;
+                  min-width: 0;
+                "
+              />
+            </div>
+            <div
+              class="mb-1"
+              style="
+                position: relative;
+                display: flex;
+                align-items: center;
+                min-height: 32px;
+              "
+            >
+              Fecha:
+              <span
+                id="fechaTexto"
+                style="margin-left: 8px; font-weight: bold; user-select: none"
+              ></span>
+              <span
+                style="
+                  margin-left: 8px;
+                  font-size: 18px;
+                  color: #1976d2;
+                  user-select: none;
+                "
+                >📅</span
+              >
+              <input
+                id="fechaInput"
+                type="date"
+                style="
+                  position: absolute;
+                  left: 55px;
+                  top: 0;
+                  width: 130px;
+                  height: 32px;
+                  opacity: 0;
+                  cursor: pointer;
+                  z-index: 2;
+                "
+                title="Elegir fecha"
+              />
+            </div>
+            <!-- Recuadro Responsable de la instalación eléctrica -->
+            <div class="border rounded p-2 mb-2" style="background: #f4f8fb">
+              <div class="mb-1">
+                Responsable de la instalación eléctrica:
+                <input
+                  type="text"
+                  style="
+                    border: none;
+                    border-bottom: 1px solid #333;
+                    outline: none;
+                    width: 100%;
+                    min-width: 0;
+                  "
+                />
+              </div>
+              <div class="mb-1">
+                Matrícula profesional:
+                <input
+                  type="text"
+                  style="
+                    border: none;
+                    border-bottom: 1px solid #333;
+                    outline: none;
+                    width: 100%;
+                    min-width: 0;
+                  "
+                />
+              </div>
+              <div class="mb-1">
+                Acompaña recorrido:
+                <label class="ms-2"
+                  ><input type="radio" name="acompanha_elec" value="Si" />
+                  Sí</label
+                >
+                <label class="ms-2"
+                  ><input type="radio" name="acompanha_elec" value="No" />
+                  No</label
+                >
+                <label class="ms-2"
+                  ><input type="radio" name="acompanha_elec" value="Ausente" />
+                  Ausente</label
+                >
+              </div>
+            </div>
+            <!-- Recuadro Responsable HSMA -->
+            <div class="border rounded p-2 mb-2" style="background: #f4f8fb">
+              <div class="mb-1">
+                Responsable HSMA:
+                <input
+                  type="text"
+                  style="
+                    border: none;
+                    border-bottom: 1px solid #333;
+                    outline: none;
+                    width: 100%;
+                    min-width: 0;
+                  "
+                />
+              </div>
+              <div class="mb-1">
+                Matrícula profesional:
+                <input
+                  type="text"
+                  style="
+                    border: none;
+                    border-bottom: 1px solid #333;
+                    outline: none;
+                    width: 100%;
+                    min-width: 0;
+                  "
+                />
+              </div>
+              <div class="mb-1">
+                Acompaña recorrido:
+                <label class="ms-2"
+                  ><input type="radio" name="acompanha_hsma" value="Si" />
+                  Sí</label
+                >
+                <label class="ms-2"
+                  ><input type="radio" name="acompanha_hsma" value="No" />
+                  No</label
+                >
+                <label class="ms-2"
+                  ><input type="radio" name="acompanha_hsma" value="Ausente" />
+                  Ausente</label
+                >
+              </div>
+            </div>
+            <!-- Horarios -->
+            <div class="mb-1">
+              Hora inicio:
+              <input
+                type="time"
+                style="
+                  border: none;
+                  border-bottom: 1px solid #333;
+                  outline: none;
+                  width: 100%;
+                  min-width: 0;
+                "
+              />
+              Hora fin:
+              <input
+                type="time"
+                style="
+                  border: none;
+                  border-bottom: 1px solid #333;
+                  outline: none;
+                  width: 100%;
+                  min-width: 0;
+                "
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        id="contenedorTabla"
+        class="container-fluid my-3"
+        style="margin-top: 0; padding-top: 0"
+      >
+        <h4>Datos de la Medición</h4>
+        <div class="table-responsive">
+          <table
+            id="medicionTabla"
+            class="table table-bordered table-striped align-middle text-center"
+          >
+            <thead class="table-dark">
+              <tr>
+                <th rowspan="2">
+                  <a href="#ref22">(22) N° de toma de tierra</a>
+                </th>
+                <th rowspan="2"><a href="#ref23">(23) Sector</a></th>
+                <th
+                  rowspan="2"
+                  data-tooltip="Condición del terreno al momento de la medición"
+                >
+                  <a href="#ref24">(24) Descripción del terreno</a>
+                </th>
+                <th
+                  rowspan="2"
+                  data-tooltip="Tipo de puesta a tierra que se evalúa"
+                >
+                  <a href="#ref25">(25) Uso de la puesta a tierra</a>
+                </th>
+                <th
+                  rowspan="2"
+                  data-tooltip="Sistema de puesta a tierra utilizado"
+                >
+                  <a href="#ref26"
+                    >(26) Esquema de conexión a tierra utilizado</a
+                  >
+                </th>
+                <th colspan="2">(27)-(28) Medición de la puesta a tierra</th>
+                <th colspan="2">(29)-(30) Continuidad de las masas</th>
+                <th
+                  rowspan="2"
+                  data-tooltip="Indica si se usa DD, interruptor automático o fusible"
+                >
+                  <a href="#ref31"
+                    >(31) Dispositivos contra contactos indirectos</a
+                  >
+                </th>
+                <th
+                  rowspan="2"
+                  data-tooltip="¿El Dispositivo de Protección empleado puede desconectar en forma automática la alimentación para lograr la Protección contra contactos indirectos"
+                >
+                  <a href="#ref32"
+                    >(32) Desconexión automática en caso de falla</a
+                  >
+                </th>
+                <th rowspan="2" class="oculto-espacio"></th>
+              </tr>
+              <tr>
+                <th
+                  data-tooltip="Medida de resistencia en ohmios obtenida en la medición"
+                >
+                  <a href="#ref27">(27) Valor(Ω)</a>
+                </th>
+                <th
+                  data-tooltip="Indica si la medición cumple con los parámetros aceptables"
+                >
+                  <a href="#ref28">(28) ¿Cumple?</a>
+                </th>
+                <th
+                  data-tooltip="¿el circuito de puesta a tierra es continuo y permanente?"
+                >
+                  <a href="#ref29">(29)</a>
+                </th>
+                <th
+                  data-tooltip="¿el circuito de puesta a tierra tiene la capacidad de carga para conducir corriente de falla y una resistencia apropiada?"
+                >
+                  <a href="#ref30">(30)</a>
+                </th>
+                <th class="oculto-espacio"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Filas dinámicas -->
+            </tbody>
+          </table>
+        </div>
+        <button class="btn btn-primary me-2" onclick="agregarFila()">
+          Agregar Fila
+        </button>
+        <button class="btn btn-success" onclick="guardarComoPDF()">
+          Guardar como PDF
+        </button>
+        <!-- <button class="btn btn-success" onclick="imprimirPDF()"> -->
+        <!--   Guardar como PDF -->
+        <!-- </button> -->
+        <!-- <hr /> -->
+      </div>
+
+      <div class="pdf-pagebreak"></div>
+      <div id="referencias" class="my-3" style="margin: 20px 20px">
+        <h5>Referencias de columnas</h5>
+        <table
+          class="table table-bordered table-sm"
+          style="font-size: 9px; line-height: 1.2"
+        >
+          <tbody>
+            <tr>
+              <td><b>(22) N° de toma de tierra:</b></td>
+              <td>
+                Indicar mediante un número la toma a tierra donde se realiza la
+                medición, el cual deberá coincidir con el del plano o croquis
+                que se adjunta a la medición.
+              </td>
+            </tr>
+            <tr>
+              <td><b>(23) Sector:</b></td>
+              <td>
+                Indicar el sector o la sección dentro de la empresa donde se
+                realiza la medición.
+              </td>
+            </tr>
+            <tr>
+              <td><b>(24) Descripción del terreno:</b></td>
+              <td>
+                Indicar o describir la condición del terreno al momento de la
+                medición (lecho seco, arenoso seco o húmedo, lluvias recientes,
+                turba, limo, pantanoso, etc.).
+              </td>
+            </tr>
+            <tr>
+              <td><b>(25) Uso de la puesta a tierra:</b></td>
+              <td>
+                Indicar el uso habitual, como puesta a tierra del neutro de
+                transformador, seguridad de masas, protección de equipos
+                electrónicos, informática, iluminación, pararrayos, otros.
+              </td>
+            </tr>
+            <tr>
+              <td><b>(26) Esquema de conexión a tierra:</b></td>
+              <td>
+                Indicar cuál es el esquema utilizado en el establecimiento (TT /
+                TN-S / TN-C / TN-C-S / IT).
+              </td>
+            </tr>
+            <tr>
+              <td><b>(27) Valor obtenido (Ω):</b></td>
+              <td>
+                Indicar el valor en Ohm obtenido en la medición de resistencia
+                de puesta a tierra de las masas.
+              </td>
+            </tr>
+            <tr>
+              <td><b>(28) Cumple con reglamentación:</b></td>
+              <td>
+                Indicar si el resultado cumple con la Reglamentación de la
+                Asociación Argentina de Electrotécnicos para instalaciones
+                eléctricas en inmuebles.
+              </td>
+            </tr>
+            <tr>
+              <td><b>(29) Continuidad del circuito:</b></td>
+              <td>
+                Indicar si el circuito de puesta a tierra es continuo y
+                permanente.
+              </td>
+            </tr>
+            <tr>
+              <td><b>(30) Capacidad de conducir corriente de falla:</b></td>
+              <td>
+                Indicar si el circuito tiene capacidad de carga y resistencia
+                adecuada para conducir la corriente de falla.
+              </td>
+            </tr>
+            <tr>
+              <td><b>(31) Protección contra contactos indirectos:</b></td>
+              <td>
+                Indicar si se usa DD (diferencial), IA (interruptor automático)
+                o FUS (fusible).
+              </td>
+            </tr>
+            <tr>
+              <td><b>(32) Desconexión automática:</b></td>
+              <td>
+                Indicar si el dispositivo de protección puede desconectar
+                automáticamente el circuito dentro de los tiempos
+                reglamentarios.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="margin: 40px 40px 40px 0; padding: 20px 0 0 0">
+        <!-- <h5 style="font-size: 13px; font-weight: 700; text-align: right;">Firma digital</h5> -->
+        <div
+          style="
+            border: none;
+            width: 320px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            margin-left: auto;
+          "
+        >
+          <img
+            src="./FIRMADIGITAL.png"
+            alt="Firma digital"
+            style="max-height: 100px; max-width: 300px"
+          />
+        </div>
+      </div>
+    </div>
+    <!-- Bootstrap JS (opcional, solo si usas componentes JS de Bootstrap) -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> -->
+  <script src="./recursos/bootstrap.min.js"></script>
+    <script src="./scripts/scripts.js"></script>   
+  </body>
+</html>
+

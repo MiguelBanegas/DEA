@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <link rel="stylesheet" href="./css/styles.css">
+
+  <title>PROTOCOLO DE MEDICIÓN</title>
+  
+</head>
+
+<body>
+  <div id="exportPDF">
+    <form>
+      <img src="img/LogoDEA2.png" alt="Logo" style="position: absolute; top: 10px; left: 10px; width: 150px;">
+      <h2 class="title">PROTOCOLO DE MEDICIÓN DE LA PUESTA A TIERRA Y CONTINUIDAD DE LAS MASAS</h2>
+
+      <label for="razon_social">Razón Social:</label>
+      <input type="text" id="razon_social" name="razon_social" value="razon_social">
+      <label for="cuit">C.U.I.T.:</label>
+      <input type="text" id="cuit" name="cuit" value="cuit">
+      <label for="direccion">Dirección:</label>
+      <input type="text" id="direccion" name="direccion" value="direccion">
+
+      <label for="localidad">Localidad:</label>
+      <input type="text" id="localidad" name="localidad" value="localidad">
+
+      <div style="display: flex; gap: 20px;">
+        <div style="flex: 1;">
+          <label for="cp">CP:</label>
+          <input type="text" id="cp" name="cp" value="cp">
+        </div>
+        <div style="flex: 1;">
+          <label for="provincia">Provincia:</label>
+          <select id="provincia" name="provincia">
+            <option value="">Seleccionar Provincia</option>
+            <option value="Buenos Aires">Buenos Aires</option>
+            <option value="Catamarca">Catamarca</option>
+            <option value="Chaco">Chaco</option>
+            <option value="Chubut">Chubut</option>
+            <option value="Córdoba">Córdoba</option>
+            <option value="Corrientes">Corrientes</option>
+            <option value="Entre Ríos">Entre Ríos</option>
+            <option value="Formosa">Formosa</option>
+            <option value="Jujuy">Jujuy</option>
+            <option value="La Pampa">La Pampa</option>
+            <option value="La Rioja">La Rioja</option>
+            <option value="Mendoza">Mendoza</option>
+            <option value="Misiones">Misiones</option>
+            <option value="Neuquén">Neuquén</option>
+            <option value="Río Negro">Río Negro</option>
+            <option value="Salta">Salta</option>
+            <option value="San Juan">San Juan</option>
+            <option value="San Luis">San Luis</option>
+            <option value="Santa Cruz">Santa Cruz</option>
+            <option value="Santa Fe">Santa Fe</option>
+            <option value="Santiago del Estero">Santiago del Estero</option>
+            <option value="Tierra del Fuego, Antártida e Islas del Atlántico Sur">Tierra del Fuego, Antártida e Islas
+              del Atlántico Sur</option>
+            <option value="Tucumán">Tucumán</option>
+          </select>
+        </div>
+
+      </div>
+          <!-- <hr> -->
+      <div class="section-title">DATOS DEL PROFESIONAL QUE VA REALIZAR LAS MEDICIONES</div>
+
+      <label for="nombre_profesional">Nombre:</label>
+      <input type="text" id="nombre_profesional" name="nombre_profesional" value="nombre_profesional">
+
+      <label for="apellido_profesional">Apellido:</label>
+      <input type="text" id="apellido_profesional" name="apellido_profesional" value="apellido_profesional">
+
+      <label for="matricula_profesional">Matrícula N°:</label>
+      <input type="text" id="matricula_profesional" name="matricula_profesional" value="matricula_profesional">
+
+      <label for="incumbencias_electricidad">Posee incumbencias específicas en electricidad (si /no ):</label>
+      <select id="incumbencias_especificas" name="incumbencias_especificas">
+        <option value="Técnico eléctrico">Técnico eléctrico</option>
+        <option value="Técnico Electromecánico">Técnico Electromecánico</option>
+        <option value="Ingeniero eléctrico">Ingeniero eléctrico</option>
+        <option value="Ingeniero electromecánico">Ingeniero electromecánico</option>
+      </select>
+
+      <label for="documentacion_incumbencias">Presenta documentación de incumbencias específicas ( Si / No ):</label>
+      <select id="documentacion_incumbencias" name="documentacion_incumbencias">
+        <option value="SI">SI</option>
+        <option value="NO">NO</option>
+      </select>
+      <label for="rango_kv">Hasta que rango de KV (13,2 KV técnicos / mas de 13,2 KV inges.):</label>
+      <select id="rango_kv" name="rango_kv">
+        <option value="13.2">13,2 KV técnicos</option>
+        <option value="mas_13.2">mas de 13,2 KV inges.</option>
+      </select>
+
+      <label for="pago_matricula">Presenta documentaci&oacute;n de pago de matr&iacute;cula al d&iacute;a ( si / no
+        ):</label>
+      <select id="pago_matricula" name="pago_matricula">
+        <option value="SI">SI</option>
+        <option value="NO">NO</option>
+      </select>
+
+      <label for="seguro_accidentes">¿Posee seguro de accidentes personales? ( SI / NO ):</label>
+ <select id="seguro_accidentes" name="seguro_accidentes">
+ <option value="SI">SI</option>
+ <option value="NO">NO</option>
+ </select>
+
+ <label for="pago_seguro">¿Presenta la documentación de pago al día del seguro de accidentes personales? ( Si / No ):</label>
+ <select id="pago_seguro" name="pago_seguro">
+ <option value="SI">SI</option>
+ <option value="NO">NO</option>
+ </select>
+
+      <!-- <hr> -->
+
+      <div class="section-title">DATOS DEL INSTRUMENTO CON EL QUE VAN REALIZAR LAS MEDICIONES</div>
+
+      <label for="marca_instrumento">Marca:</label>
+      <input type="text" id="marca_instrumento" name="marca_instrumento" value="marca_instrumento">
+
+      <label for="modelo_instrumento">Modelo:</label>
+      <input type="text" id="modelo_instrumento" name="modelo_instrumento" value="modelo_instrumento">
+
+      <label for="numero_serie_instrumento">Numero de serie:</label>
+      <input type="text" id="numero_serie_instrumento" name="numero_serie_instrumento" value="numero_serie_instrumento">
+
+      <div style="display: flex; gap: 20px;">
+        <div style="flex: 1;">
+          <label for="tipo_instrumento">Tipo ( MFT / Telurímetro / Probador de IDs / MFT de PAT / Otro
+            ):</label>
+          <select id="tipo_instrumento" name="tipo_instrumento">
+            <option value="MFT">MFT</option>
+            <option value="Telurímetro">Telurímetro</option>
+            <option value="Probador de IDs">Probador de IDs</option>
+            <option value="MFT de PAT">MFT de PAT</option>
+            <option value="Otro">Otro</option>
+          </select>
+        </div>
+        <div style="flex: 1;">
+          <label for="cumple_iec">Cumple con IEC 61557 ( Si / No ):</label>
+          <select id="cumple_iec" name="cumple_iec">
+            <option value="SI">SI</option>
+            <option value="NO">NO</option>
+          </select>
+        </div>
+      </div>
+      <div style="display: flex; gap: 20px;">
+      </div>
+  
+  <div style="flex-grow: 1; margin-right: 10px;">
+    <label for="certificado_fabricante">Posee certificado de calibraci&oacute;n del fabricante ( Si / No ):</label>
+    <select id="certificado_fabricante" name="certificado_fabricante" style="width: 100%;">
+      <option value="SI">SI</option>
+      <option value="NO">NO</option>
+    </select>
+  </div>
+  <div style="flex-grow: 1;">
+    <label for="condiciones_uso">El instrumento se encuentra en condiciones de uso igual a nuevo ( Si / No ):</label>
+    <select id="condiciones_uso" name="condiciones_uso" style="width: 100%;">
+      <option value="SI">SI</option>
+      <option value="NO">NO</option>
+    </select>
+  </div>
+  <!-- <br>
+  <hr> -->
+  <div class="section-title">Datos de la medicion</div>
+
+  <div style="display: flex; justify-content: space-between;">
+    <div style="flex-grow: 1; margin-right: 10px;">
+      <label for="fecha_medicion">Fecha de la medici&oacute;n:</label>
+      <input type="date" id="fecha_medicion" name="fecha_medicion">
+    </div>
+    <div style="flex-grow: 1; margin-right: 10px;">
+      <label for="hora_inicio">Hora de inicio:</label>
+      <input type="time" id="hora_inicio" name="hora_inicio">
+    </div>
+    <div style="flex-grow: 1;">
+      <label for="hora_finalizacion">Hora finalización:</label>
+      <input type="time" id="hora_finalizacion" name="hora_finalizacion">
+    </div>
+  </div>
+
+
+
+  <label for="metodologia">Metodología utilizada:</label>
+  <textarea id="metodologia" name="metodologia"></textarea>
+
+
+  <label for="observaciones">Observaciones:</label>
+  <textarea id="observaciones" name="observaciones"></textarea>
+  <!-- <hr> -->
+  <div class="section-title">Documentación que se Adjunta a la Medición</div>
+
+  <label for="certificado_calibracion">Certificado de Calibración:</label>
+  <select id="certificado_calibracion" name="certificado_calibracion">
+    <option value="SI">SI</option>
+    <option value="NO">NO</option>
+  </select>
+
+  <label for="plano_croquis">Plano o croquis:</label>
+  <select id="plano_croquis" name="plano_croquis">
+    <option value="SI">SI</option>
+    <option value="NO">NO</option>
+  </select>
+
+  <div class="seccion-adjuntar-archivo">
+  <label>Adjuntar Imagen:</label>
+  <div>
+    <label for="imagen_adjunta" class="custom-file-upload-button">Elegir archivos</label>
+    <span id="file-upload-status"></span>
+  </div>
+ </div>
+
+ <label for="imagen_adjunta">Adjuntar Imagen:</label>
+  <input type="file" id="imagen_adjunta" name="imagen_adjunta" accept="image/*" multiple>
+ <div id="imagenes_mostradas"></div>
+  <div id="contenedor_imagenes_adjuntas"></div>
+
+  <img src="img/FIRMADIGITAL.png" alt="Firma Digital" style="float: right; margin-right: 160px; width: 160px; height: auto;">
+
+</form>
+  
+  </div>
+  
+  
+  <button onclick="guardarComoPDF()" style="display: block;">Exportar a PDF</button>
+  
+  <script src="./js/scripts3.js"></script>   
+</body>
+
+
+</html>

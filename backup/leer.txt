@@ -1,0 +1,3 @@
+ejecutar iniciar.bat
+
+se abre una consola con servidor web y despues abre el navegador con la ventana de la planila
