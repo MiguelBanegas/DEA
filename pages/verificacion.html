@@ -195,7 +195,7 @@
         max-width: auto;
         min-width: 0 !important; /* Evita que se aplaste la tabla */
         overflow-y: auto;
-        overflow-x: visible; /* Evita el scroll horizontal */;
+        overflow-x: visible; /* Evita el scroll horizontal */
       }
 
       #medicionTabla thead th {
@@ -324,6 +324,7 @@
               <b>Cliente:</b>
               <input
                 type="text"
+                id="cliente"
                 style="
                   font-weight: bold;
                   border: none;
@@ -339,6 +340,7 @@
               <b>Dirección:</b>
               <input
                 type="text"
+                id="direccion"
                 style="
                   border: none;
                   border-bottom: 1px solid #333;
@@ -353,6 +355,7 @@
               <b>Localidad:</b>
               <input
                 type="text"
+                id="localidad"
                 style="
                   border: none;
                   border-bottom: 1px solid #333;
@@ -367,6 +370,7 @@
               <b>Pcia.:</b>
               <input
                 type="text"
+                id="provincia"
                 style="
                   border: none;
                   border-bottom: 1px solid #333;
@@ -381,6 +385,7 @@
               <b>CUIT:</b>
               <input
                 type="text"
+                id="cuit"
                 style="
                   border: none;
                   border-bottom: 1px solid #333;
@@ -408,6 +413,7 @@
             <div class="mb-1">
               Tipo de instalación:
               <select
+                id="tipoInstalacion"
                 style="
                   border: none;
                   border-bottom: 1px solid #333;
@@ -489,6 +495,7 @@
                 Responsable de la instalación eléctrica:
                 <input
                   type="text"
+                  id="responsableElectrico"
                   style="
                     border: none;
                     border-bottom: 1px solid #333;
@@ -502,6 +509,7 @@
                 Matrícula profesional:
                 <input
                   type="text"
+                  id="matriculaElectrico"
                   style="
                     border: none;
                     border-bottom: 1px solid #333;
@@ -533,6 +541,7 @@
                 Responsable HSMA:
                 <input
                   type="text"
+                  id="responsableHsma"
                   style="
                     border: none;
                     border-bottom: 1px solid #333;
@@ -546,6 +555,7 @@
                 Matrícula profesional:
                 <input
                   type="text"
+                  id="matriculaHsma"
                   style="
                     border: none;
                     border-bottom: 1px solid #333;
@@ -576,6 +586,7 @@
               Hora inicio:
               <input
                 type="time"
+                id="horaInicio"
                 style="
                   border: none;
                   border-bottom: 1px solid #333;
@@ -587,6 +598,7 @@
               Hora fin:
               <input
                 type="time"
+                id="horaFin"
                 style="
                   border: none;
                   border-bottom: 1px solid #333;
@@ -693,6 +705,7 @@
           Guardar como PDF
         </button> -->
         <button class="btn btn-success ms-3 mb-3" onclick="guardarComoPDF()">Exportar a PDF</button>
+        <button class="btn btn-info ms-3 mb-3" onclick="guardarEnFirebase()">Guardar en Firebase</button>
   
         <!-- <button class="btn btn-success" onclick="imprimirPDF()"> -->
         <!--   Guardar como PDF -->
@@ -823,5 +836,76 @@
       Generando PDF, por favor espera...
       <!-- Puedes agregar un spinner CSS o una imagen aquí -->
     </div>
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script>
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "TU_API_KEY",
+        authDomain: "TU_AUTH_DOMAIN",
+        projectId: "TU_PROJECT_ID",
+        storageBucket: "TU_STORAGE_BUCKET",
+        messagingSenderId: "TU_MESSAGING_SENDER_ID",
+        appId: "TU_APP_ID"
+      };
+
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+
+      function guardarEnFirebase() {
+        const mediciones = [];
+        const filas = document.querySelectorAll("#medicionTabla tbody tr");
+
+        filas.forEach(fila => {
+          const medicion = {
+            tomaTierra: fila.cells[0].innerText,
+            sector: fila.cells[1].innerText,
+            terreno: fila.cells[2].querySelector('select').value,
+            uso: fila.cells[3].querySelector('select').value,
+            esquema: fila.cells[4].querySelector('select').value,
+            valor: fila.cells[5].innerText,
+            cumple: fila.cells[6].querySelector('select').value,
+            continuo: fila.cells[7].querySelector('select').value,
+            capacidad: fila.cells[8].querySelector('select').value,
+            dispositivos: fila.cells[9].querySelector('select').value,
+            desconexion: fila.cells[10].querySelector('select').value,
+          };
+          mediciones.push(medicion);
+        });
+
+        const datos = {
+          cliente: document.getElementById('cliente').value,
+          direccion: document.getElementById('direccion').value,
+          localidad: document.getElementById('localidad').value,
+          provincia: document.getElementById('provincia').value,
+          cuit: document.getElementById('cuit').value,
+          tipoInstalacion: document.getElementById('tipoInstalacion').value,
+          sector: document.getElementById('sectorInput').value,
+          fecha: document.getElementById('fechaInput').value,
+          responsableElectrico: document.getElementById('responsableElectrico').value,
+          matriculaElectrico: document.getElementById('matriculaElectrico').value,
+          acompanhaElec: document.querySelector('input[name="acompanha_elec"]:checked')?.value,
+          responsableHsma: document.getElementById('responsableHsma').value,
+          matriculaHsma: document.getElementById('matriculaHsma').value,
+          acompanhaHsma: document.querySelector('input[name="acompanha_hsma"]:checked')?.value,
+          horaInicio: document.getElementById('horaInicio').value,
+          horaFin: document.getElementById('horaFin').value,
+          mediciones: mediciones,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        };
+
+        db.collection("mediciones").add(datos)
+        .then((docRef) => {
+            console.log("Document written with ID: ", docRef.id);
+            alert("¡Datos guardados en Firebase!");
+        })
+        .catch((error) => {
+            console.error("Error adding document: ", error);
+            alert("Error al guardar en Firebase. Revisa la consola para más detalles.");
+        });
+      }
+    </script>
   </body>
 </html>
