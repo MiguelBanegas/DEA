@@ -227,11 +227,187 @@
   
   
   <!-- <button onclick="guardarComoPDF()" style="display: block;">Exportar a PDF</button> -->
-  <button class="btn btn-success ms-3 mb-3" onclick="guardarComoPDF()">Exportar a PDF</button>
-  <script src="../js/scripts3.js?v1.1"></script>   
+  <button id="exportarPDFBtn" class="btn btn-success ms-3 mb-3" onclick="guardarComoPDF()" disabled>Exportar a PDF</button>
+  <button class="btn btn-info ms-3 mb-3" onclick="guardarProtocolo()">Guardar en Base de Datos</button>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script src="https://unpkg.com/browser-image-compression@latest/dist/browser-image-compression.js"></script>
+  <script src="../js/firebase-config.js"></script>
+  <script src="../js/scripts3.js?v1.1"></script>
+  
+  
+  <script>
+    // Acá asumimos que ya cargaste la librería browser-image-compression:
+async function guardarProtocolo() {
+  const exportarBtn = document.getElementById('exportarPDFBtn');
+  const loadingIndicator = document.getElementById('loading-indicator');
+  exportarBtn.disabled = true;
+  loadingIndicator.style.display = 'block';
+
+  const MAX_SIZE_MB = 10;
+
+  const camposRequeridos = [
+    { id: 'razon_social', nombre: 'Razón Social' },
+    { id: 'cuit', nombre: 'CUIT' },
+    { id: 'direccion', nombre: 'Dirección' },
+    { id: 'localidad', nombre: 'Localidad' },
+    { id: 'provincia', nombre: 'Provincia' },
+    { id: 'nombre_profesional', nombre: 'Nombre del Profesional' },
+    { id: 'apellido_profesional', nombre: 'Apellido del Profesional' },
+    { id: 'matricula_profesional', nombre: 'Matrícula del Profesional' },
+    { id: 'marca_instrumento', nombre: 'Marca del Instrumento' },
+    { id: 'modelo_instrumento', nombre: 'Modelo del Instrumento' },
+    { id: 'numero_serie_instrumento', nombre: 'Número de Serie del Instrumento' },
+    { id: 'fecha_medicion', nombre: 'Fecha de Medición' },
+    { id: 'hora_inicio', nombre: 'Hora de Inicio' },
+    { id: 'hora_finalizacion', nombre: 'Hora de Finalización' }
+  ];
+
+  // Validación de campos
+  for (const campo of camposRequeridos) {
+    const input = document.getElementById(campo.id);
+    if (!input.value.trim()) {
+      alert(`Por favor, completa el campo "${campo.nombre}".`);
+      input.focus();
+      exportarBtn.disabled = false;
+      loadingIndicator.style.display = 'none';
+      return;
+    }
+  }
+
+  const fileInput = document.getElementById('imagen_adjunta');
+  let file = fileInput.files[0];
+  let imageUrl = null;
+
+  // Función para aplicar timeout a fetch
+  const fetchConTimeout = (url, options, timeout = 10000) => {
+    return Promise.race([
+      fetch(url, options),
+      new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('Timeout al intentar conectar con el servidor')), timeout)
+      )
+    ]);
+  };
+
+  if (file) {
+    // Validar tipo MIME: solo imágenes permitidas
+    const tiposPermitidos = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/bmp'];
+    if (!tiposPermitidos.includes(file.type)) {
+      alert(`Archivo inválido. Solo se permiten imágenes (JPEG, PNG, GIF, WEBP, BMP). No subas videos ni otros formatos.`);
+      exportarBtn.disabled = false;
+      loadingIndicator.style.display = 'none';
+      return;
+    }
+
+    // Validar tamaño máximo
+    if (file.size > MAX_SIZE_MB * 1024 * 1024) {
+      alert(`La imagen es demasiado grande (${(file.size / 1024 / 1024).toFixed(2)}MB). El máximo permitido es ${MAX_SIZE_MB}MB.`);
+      exportarBtn.disabled = false;
+      loadingIndicator.style.display = 'none';
+      return;
+    }
+
+    try {
+      // Opciones para comprimir la imagen
+      const options = {
+        maxSizeMB: 2,
+        maxWidthOrHeight: 1920,
+        useWebWorker: true,
+        maxIteration: 10
+      };
+
+      // Comprimir imagen
+      const compressedFile = await imageCompression(file, options);
+      console.log(`Original size: ${(file.size / 1024 / 1024).toFixed(2)} MB`);
+      console.log(`Compressed size: ${(compressedFile.size / 1024 / 1024).toFixed(2)} MB`);
+
+      // Preparar FormData
+      const formData = new FormData();
+      formData.append('image', compressedFile, compressedFile.name || file.name);
+
+      // Subir imagen con timeout
+      const response = await fetchConTimeout('http://dea.mabcontrol.ar:3001/upload', {
+        method: 'POST',
+        body: formData
+      }, 10000);
+
+      if (!response.ok) {
+        throw new Error('Error en la subida del archivo. Estado: ' + response.status);
+      }
+
+      const result = await response.json();
+      imageUrl = result.imageUrl;
+
+    } catch (error) {
+      console.error("Error al comprimir o subir la imagen: ", error);
+      alert("Error al procesar o subir la imagen. Intentá de nuevo.");
+      exportarBtn.disabled = false;
+      loadingIndicator.style.display = 'none';
+      return;
+    }
+  }
+
+  // Armar objeto protocolo
+  const protocolo = {
+    razonSocial: document.getElementById('razon_social').value,
+    cuit: document.getElementById('cuit').value,
+    direccion: document.getElementById('direccion').value,
+    localidad: document.getElementById('localidad').value,
+    cp: document.getElementById('cp').value,
+    provincia: document.getElementById('provincia').value,
+    nombreProfesional: document.getElementById('nombre_profesional').value,
+    apellidoProfesional: document.getElementById('apellido_profesional').value,
+    matriculaProfesional: document.getElementById('matricula_profesional').value,
+    incumbencias: document.getElementById('incumbencias_especificas').value,
+    documentacionIncumbencias: document.getElementById('documentacion_incumbencias').value,
+    rangoKv: document.getElementById('rango_kv').value,
+    pagoMatricula: document.getElementById('pago_matricula').value,
+    seguroAccidentes: document.getElementById('seguro_accidentes').value,
+    pagoSeguro: document.getElementById('pago_seguro').value,
+    marcaInstrumento: document.getElementById('marca_instrumento').value,
+    modeloInstrumento: document.getElementById('modelo_instrumento').value,
+    numeroSerieInstrumento: document.getElementById('numero_serie_instrumento').value,
+    tipoInstrumento: document.getElementById('tipo_instrumento').value,
+    cumpleIec: document.getElementById('cumple_iec').value,
+    certificadoFabricante: document.getElementById('certificado_fabricante').value,
+    condicionesUso: document.getElementById('condiciones_uso').value,
+    fechaMedicion: document.getElementById('fecha_medicion').value,
+    horaInicio: document.getElementById('hora_inicio').value,
+    horaFinalizacion: document.getElementById('hora_finalizacion').value,
+    metodologia: document.getElementById('metodologia').value,
+    observaciones: document.getElementById('observaciones').value,
+    certificadoCalibracion: document.getElementById('certificado_calibracion').value,
+    planoCroquis: document.getElementById('plano_croquis').value,
+    vpsImageUrl: imageUrl || null,
+    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+  };
+
+  // Timeout para guardar en Firebase
+  const agregarConTimeout = (coleccion, data, timeout = 10000) => {
+    return Promise.race([
+      db.collection(coleccion).add(data),
+      new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('Timeout al guardar en Firebase')), timeout)
+      )
+    ]);
+  };
+
+  try {
+    const docRef = await agregarConTimeout("protocolos", protocolo, 10000);
+    console.log("Document written with ID: ", docRef.id);
+    alert("¡Protocolo guardado en Firebase!");
+  } catch (error) {
+    console.error("Error al guardar en Firebase: ", error);
+    alert("Error al guardar en Firebase (posible problema de conexión). Intentá nuevamente.");
+  } finally {
+    exportarBtn.disabled = false;
+    loadingIndicator.style.display = 'none';
+  }
+}
+
+  </script>
   <div id="loading-indicator" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: rgba(255, 255, 255, 0.8); padding: 20px; border-radius: 10px; z-index: 1000;">
-    Generando PDF, por favor espera....
-    <!-- Puedes agregar un spinner CSS o una imagen aquí -->
+    Subiendo imagen y guardando datos, por favor espera....
   </div>
 </body>
 

@@ -839,25 +839,47 @@
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="../js/firebase-config.js"></script>
+    
     <script>
-      // Your web app's Firebase configuration
-      const firebaseConfig = {
-        apiKey: "TU_API_KEY",
-        authDomain: "TU_AUTH_DOMAIN",
-        projectId: "TU_PROJECT_ID",
-        storageBucket: "TU_STORAGE_BUCKET",
-        messagingSenderId: "TU_MESSAGING_SENDER_ID",
-        appId: "TU_APP_ID"
-      };
-
-      // Initialize Firebase
-      firebase.initializeApp(firebaseConfig);
-      const db = firebase.firestore();
-
       function guardarEnFirebase() {
-        const mediciones = [];
-        const filas = document.querySelectorAll("#medicionTabla tbody tr");
+        // Validación de campos
+        const camposRequeridos = [
+          { id: 'cliente', nombre: 'Cliente' },
+          { id: 'direccion', nombre: 'Dirección' },
+          { id: 'localidad', nombre: 'Localidad' },
+          { id: 'provincia', nombre: 'Provincia' },
+          { id: 'cuit', nombre: 'CUIT' },
+          { id: 'fechaInput', nombre: 'Fecha' }
+        ];
 
+        for (const campo of camposRequeridos) {
+          const input = document.getElementById(campo.id);
+          if (!input.value.trim()) {
+            alert(`Por favor, completa el campo "${campo.nombre}".`);
+            input.focus();
+            return;
+          }
+        }
+
+        if (!document.querySelector('input[name="acompanha_elec"]:checked')) {
+          alert('Por favor, selecciona una opción para "Acompaña recorrido" del responsable eléctrico.');
+          return;
+        }
+
+        if (!document.querySelector('input[name="acompanha_hsma"]:checked')) {
+          alert('Por favor, selecciona una opción para "Acompaña recorrido" del responsable HSMA.');
+          return;
+        }
+
+        const filas = document.querySelectorAll("#medicionTabla tbody tr");
+        if (filas.length === 0) {
+          alert('Debes agregar al menos una fila en la tabla de mediciones.');
+          return;
+        }
+
+        // Si todas las validaciones pasan, se procede a guardar
+        const mediciones = [];
         filas.forEach(fila => {
           const medicion = {
             tomaTierra: fila.cells[0].innerText,
@@ -886,10 +908,10 @@
           fecha: document.getElementById('fechaInput').value,
           responsableElectrico: document.getElementById('responsableElectrico').value,
           matriculaElectrico: document.getElementById('matriculaElectrico').value,
-          acompanhaElec: document.querySelector('input[name="acompanha_elec"]:checked')?.value,
+          acompanhaElec: document.querySelector('input[name="acompanha_elec"]:checked').value,
           responsableHsma: document.getElementById('responsableHsma').value,
           matriculaHsma: document.getElementById('matriculaHsma').value,
-          acompanhaHsma: document.querySelector('input[name="acompanha_hsma"]:checked')?.value,
+          acompanhaHsma: document.querySelector('input[name="acompanha_hsma"]:checked').value,
           horaInicio: document.getElementById('horaInicio').value,
           horaFin: document.getElementById('horaFin').value,
           mediciones: mediciones,
