@@ -350,7 +350,7 @@ async function guardarProtocolo() {
       formData.append('image', compressedFile, compressedFile.name || file.name);
 
       // Subir imagen con timeout
-      const response = await fetchConTimeout('http://dea.mabcontrol.ar:3001/upload', {
+      const response = await fetchConTimeout('https://dea.mabcontrol.ar:3001/upload', {
         method: 'POST',
         body: formData
       }, 10000);
