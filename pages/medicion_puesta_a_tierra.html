@@ -225,7 +225,7 @@
   </div>
   <!-- <button onclick="guardarComoPDF()" style="display: block;">Exportar a PDF</button> -->
   <button id="exportarPDFBtn" class="btn btn-success ms-3 mb-3" onclick="guardarComoPDF()" disabled>Exportar a PDF</button>
-  <button class="btn btn-info ms-3 mb-3" onclick="guardarProtocolo()">Guardar en Base de Datos</button>
+  <button id="guardarRegistroBtn" class="btn btn-info ms-3 mb-3" onclick="guardarProtocolo()">Guardar en Base de Datos</button>
     <!-- Botón para abrir modal -->
 <button class="btn btn-secondary" id="abrirModalBtn">Cargar registro</button>
 
@@ -560,8 +560,102 @@ async function guardarProtocolo() {
       contenedorImagenes.appendChild(img);
     }
 
+    // Habilitar/deshabilitar botones
+    exportarPDFBtn.disabled = false;
+    guardarRegistroBtn.disabled = true;
+
+    // Monitorear cambios en el formulario para habilitar el botón de guardar
+    const formElements = document.querySelectorAll('#exportPDF form input, #exportPDF form select, #exportPDF form textarea');
+    formElements.forEach(el => {
+      el.addEventListener('input', () => {
+        guardarRegistroBtn.disabled = false;
+      }, { once: true });
+    });
+
     modal.hide();
   });
+
+  function guardarComoPDF() {
+    const botones = [exportarPDFBtn, guardarRegistroBtn, abrirModalBtn];
+    botones.forEach(btn => btn.style.display = "none");
+
+    // Muestra el indicador de carga
+    document.getElementById('loading-indicator').style.display = 'block';
+    window.scrollTo(0, 0);
+    const contenedor = document.getElementById("exportPDF");
+    const tabla = document.getElementById("medicionTabla"); // Assuming you have a table with this ID if needed for page breaks
+    contenedor.classList.add("pdf-export", "ocultar-botones");
+    if (tabla) {
+      tabla.classList.add("ocultar-eliminar");
+    }
+
+    // Agrega fecha/hora arriba a la derecha SOLO para el PDF
+    const ahora = new Date();
+    const fechaHora = ahora.toLocaleString("es-AR", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+    const fechaDiv = document.createElement("div");
+    fechaDiv.className = "fecha-hora-impresion";
+    fechaDiv.style.position = "absolute";
+    fechaDiv.style.top = "20px";
+    fechaDiv.style.right = "40px";
+    fechaDiv.style.fontSize = "11px";
+    fechaDiv.style.fontWeight = "bold";
+    fechaDiv.style.color = "#333";
+    fechaDiv.textContent = fechaHora;
+    contenedor.prepend(fechaDiv);
+
+    // CSS para evitar cortes de filas y encabezados (partially handled by html2pdf options)
+    // Additional styling for print can be added in style.css with @media print
+
+    // Fuerza reflow (often not strictly necessary with modern browsers and libraries)
+    // void tabla.offsetHeight;
+
+    setTimeout(() => {
+      const opciones = {
+        margin: [5, 5, 15, 5],
+        filename: "planillaMedicPAT1.pdf",
+        image: { type: "jpeg", quality: 0.98 },
+        html2canvas: { scale: 2, scrollY: 0, scrollX: 0, useCORS: true },
+        jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+        pagebreak: { mode: ["avoid-all", "css", "legacy"] },
+      };
+
+      html2pdf()
+        .set(opciones)
+        .from(contenedor)
+        .toPdf()
+        .get("pdf")
+        .then(function (pdf) {
+          const totalPages = pdf.internal.getNumberOfPages();
+          const pageWidth = pdf.internal.pageSize.getWidth();
+          const pageHeight = pdf.internal.pageSize.getHeight();
+          for (let i = 1; i <= totalPages; i++) {
+            pdf.setPage(i);
+            pdf.setFontSize(10);
+            pdf.text(
+              `Página ${i} de ${totalPages}`,
+              pageWidth - 30,
+              pageHeight - 10
+            );
+          }
+        })
+        .save()
+        .then(() => {
+          contenedor.classList.remove("pdf-export", "ocultar-botones");
+          if (tabla) {
+            tabla.classList.remove("ocultar-eliminar");
+          }
+          fechaDiv.remove(); // Quita la fecha/hora del DOM
+          document.getElementById('loading-indicator').style.display = 'none';
+          botones.forEach(btn => btn.style.display = "");
+        });
+    }, 350); // Use a small delay to ensure DOM updates
+  }
 </script>
 
 <div id="loadingIndicator" class="text-center my-2" style="display: none;">
