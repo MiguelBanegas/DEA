@@ -227,30 +227,43 @@
   <button id="exportarPDFBtn" class="btn btn-success ms-3 mb-3" onclick="guardarComoPDF()" disabled>Exportar a PDF</button>
   <button id="guardarRegistroBtn" class="btn btn-info ms-3 mb-3" onclick="guardarProtocolo()">Guardar en Base de Datos</button>
     <!-- Botón para abrir modal -->
-<button class="btn btn-secondary" id="abrirModalBtn">Cargar registro</button>
+<button class="btn btn-secondary" id="abrirModalBtn">Buscar y Cargar registro</button>
 
 <!-- Modal -->
 
-<div class="modal fade" id="modalCargaRegistro" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true" style="display: none;">
-  
-  <div class="modal-dialog" role="document">
+<div class="modal fade" id="modalCargaRegistro" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
+      
       <div class="modal-header">
-        <h5 class="modal-title">Cargar formulario previo</h5>
+        <!-- <h5 class="modal-title">Búsqueda de registros</h5> -->
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
+      
       <div class="modal-body">
-        <label for="fechaDesde">Desde:</label>
-        <input type="date" id="fechaDesde" class="form-control mb-2">
-        <label for="fechaHasta">Hasta:</label>
-        <input type="date" id="fechaHasta" class="form-control mb-2">
-        <button class="btn btn-primary mb-2" id="buscarRegistrosBtn">Buscar</button>
-        <select id="selectRegistros" class="form-control mb-3"></select>
+        <div class="row">
+          <div class="col">
+            <label for="fechaDesde" class="form-label">Desde:</label>
+            <input type="date" id="fechaDesde" class="form-control">
+          </div>
+          <div class="col">
+            <label for="fechaHasta" class="form-label">Hasta:</label>
+            <input type="date" id="fechaHasta" class="form-control">
+          </div>
+        </div>
+
+        <select id="selectRegistros" class="form-control mt-3 mb-3"></select>
         <div id="imagenesAsociadas" class="d-flex flex-wrap gap-2"></div>
       </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    
     </div>
   </div>
 </div>
+
 
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
@@ -262,7 +275,7 @@
   
   <script>
     // Acá asumimos que ya cargaste la librería browser-image-compression:
-async function guardarProtocolo() {
+    async function guardarProtocolo() {
   const exportarBtn = document.getElementById('exportarPDFBtn');
   const loadingIndicator = document.getElementById('loading-indicator');
   exportarBtn.disabled = true;
@@ -436,144 +449,179 @@ async function guardarProtocolo() {
   </script>
 
 <script>
-  const abrirModalBtn = document.getElementById("abrirModalBtn");
-  const modalCargaRegistro = document.getElementById("modalCargaRegistro");
-  const modal = new bootstrap.Modal(modalCargaRegistro, { show: false });
-  const fechaDesde = document.getElementById("fechaDesde");
-  const fechaHasta = document.getElementById("fechaHasta");
-  const buscarRegistrosBtn = document.getElementById("buscarRegistrosBtn");
-  const selectRegistros = document.getElementById("selectRegistros");
-  const imagenesAsociadas = document.getElementById("imagenesAsociadas");
 
-  abrirModalBtn.addEventListener("click", () => {
-    modal.show();
-  });
+const abrirModalBtn = document.getElementById("abrirModalBtn"); // Botón para abrir el modal
+const modalCargaRegistro = document.getElementById("modalCargaRegistro"); // Modal de carga de registro
+const modal = new bootstrap.Modal(modalCargaRegistro, { show: false }); // Inicializar modal de Bootstrap
+const fechaDesde = document.getElementById("fechaDesde");
+const fechaHasta = document.getElementById("fechaHasta");
+//const buscarRegistrosBtn = document.getElementById("buscarRegistrosBtn");
+const selectRegistros = document.getElementById("selectRegistros");
+const imagenesAsociadas = document.getElementById("imagenesAsociadas");
 
-  buscarRegistrosBtn.addEventListener("click", async () => {
-    const desde = fechaDesde.value;
-    const hasta = fechaHasta.value;
+// 🔹 Forzar modal oculto al iniciar
+modalCargaRegistro.classList.remove("show");
+modalCargaRegistro.style.display = "none";
+document.body.classList.remove("modal-open");
+document.querySelectorAll(".modal-backdrop").forEach(el => el.remove());
 
-    if (!desde || !hasta) {
-      alert("Seleccioná ambas fechas.");
+let primeraAperturaModal = true; // Control de primera apertura
+// Abrir modal, setear fechas de hoy
+abrirModalBtn.addEventListener("click", async () => {
+  
+if (primeraAperturaModal) {
+    const hoy = new Date().toISOString().split('T')[0];
+    fechaDesde.value = hoy;
+    fechaHasta.value = hoy;
+    primeraAperturaModal = false; // Desactivar para futuras aperturas
+  }
+  modal.show();
+buscarRegistros(); // 🔹 búsqueda automática solo 1 vez
+});
+
+// 🔹 Disparar búsqueda automática al cambiar fechas
+fechaDesde.addEventListener("change", () => {
+  if (fechaDesde.value && fechaHasta.value) {
+    buscarRegistros();
+  }
+});
+
+fechaHasta.addEventListener("change", () => {
+  if (fechaDesde.value && fechaHasta.value) {
+    buscarRegistros();
+  }
+});
+
+// Buscar registros
+async function buscarRegistros() {
+  const desde = fechaDesde.value;
+  const hasta = fechaHasta.value;
+
+  if (!desde || !hasta) {
+    alert("Seleccioná ambas fechas.");
+    return;
+  }
+
+  loadingIndicator.innerText = "Buscando registros...";
+  loadingIndicator.style.display = 'block';
+
+  const desdeDate = new Date(desde + "T00:00:00");
+  const hastaDate = new Date(hasta + "T23:59:59");
+
+  const desdeTimestamp = firebase.firestore.Timestamp.fromDate(desdeDate);
+  const hastaTimestamp = firebase.firestore.Timestamp.fromDate(hastaDate);
+
+  try {
+    const snapshot = await db.collection("protocolos")
+      .where("fechaMedicion", ">=", desdeTimestamp)
+      .where("fechaMedicion", "<=", hastaTimestamp)
+      .orderBy("fechaMedicion", "desc")
+      .get();
+
+    selectRegistros.innerHTML = "";
+
+    if (snapshot.empty) {
+      selectRegistros.innerHTML = "<option>No se encontraron registros</option>";
+      selectRegistros.size = 1;
       return;
     }
-    loadingIndicator.innerText = "Buscando registros...";
-    loadingIndicator.style.display = 'block';
-    const desdeDate = new Date(desde + "T00:00:00");
-    const hastaDate = new Date(hasta + "T23:59:59");
 
-    const desdeTimestamp = firebase.firestore.Timestamp.fromDate(desdeDate);
-    const hastaTimestamp = firebase.firestore.Timestamp.fromDate(hastaDate);
-
-    try {
-      
-      
-      const snapshot = await db.collection("protocolos")
-        .where("fechaMedicion", ">=", desdeTimestamp)
-        .where("fechaMedicion", "<=", hastaTimestamp)
-        .orderBy("fechaMedicion", "desc")
-        .get();
-
-      selectRegistros.innerHTML = "";
-
-      if (snapshot.empty) {
-        selectRegistros.innerHTML = "<option>No se encontraron registros</option>";
-        return;
-      }
-
-      snapshot.forEach(doc => {
-        const data = doc.data();
-        const fecha = data.fechaMedicion.toDate().toLocaleDateString("es-AR");
-        const horaInicio = data.fechaMedicion.toDate().toLocaleTimeString("es-AR", { hour: '2-digit', minute: '2-digit' });
-        const option = document.createElement("option");
-        option.value = doc.id;
-        option.textContent = `${data.razonSocial} - ${fecha} ${horaInicio} - ${data.horaFinalizacion}`;
-        option.dataset.raw = JSON.stringify(data);
-        selectRegistros.appendChild(option);
-      });
-
-    } catch (error) {
-      console.error("Error al buscar registros: ", error);
-      alert("Error al consultar Firebase. Probá más tarde.");
-    } finally {
-      loadingIndicator.style.display = 'none';
-    }
-  });
-
-  selectRegistros.addEventListener("change", async () => {
-    const selectedOption = selectRegistros.options[selectRegistros.selectedIndex];
-    if (!selectedOption || !selectedOption.dataset.raw) return;
-
-    const data = JSON.parse(selectedOption.dataset.raw);
-
-    // Reconstruir el Timestamp de Firestore
-    data.fechaMedicion = new firebase.firestore.Timestamp(data.fechaMedicion.seconds, data.fechaMedicion.nanoseconds);
-
-    // Cargar campos al formulario
-    const cargarCampo = (id, valor) => {
-      const el = document.getElementById(id);
-      if (el) el.value = valor || "";
-    };
-
-    cargarCampo("razon_social", data.razonSocial);
-    cargarCampo("cuit", data.cuit);
-    cargarCampo("direccion", data.direccion);
-    cargarCampo("localidad", data.localidad);
-    cargarCampo("cp", data.cp);
-    cargarCampo("provincia", data.provincia);
-    cargarCampo("nombre_profesional", data.nombreProfesional);
-    cargarCampo("apellido_profesional", data.apellidoProfesional);
-    cargarCampo("matricula_profesional", data.matriculaProfesional);
-    cargarCampo("incumbencias_especificas", data.incumbencias);
-    cargarCampo("documentacion_incumbencias", data.documentacionIncumbencias);
-    cargarCampo("rango_kv", data.rangoKv);
-    cargarCampo("pago_matricula", data.pagoMatricula);
-    cargarCampo("seguro_accidentes", data.seguroAccidentes);
-    cargarCampo("pago_seguro", data.pagoSeguro);
-    cargarCampo("marca_instrumento", data.marcaInstrumento);
-    cargarCampo("modelo_instrumento", data.modeloInstrumento);
-    cargarCampo("numero_serie_instrumento", data.numeroSerieInstrumento);
-    cargarCampo("tipo_instrumento", data.tipoInstrumento);
-    cargarCampo("cumple_iec", data.cumpleIec);
-    cargarCampo("certificado_fabricante", data.certificadoFabricante);
-    cargarCampo("condiciones_uso", data.condicionesUso);
-    cargarCampo("hora_inicio", data.fechaMedicion.toDate().toTimeString().slice(0, 5));
-    cargarCampo("fecha_medicion", data.fechaMedicion.toDate().toISOString().split('T')[0]);
-    cargarCampo("hora_finalizacion", data.horaFinalizacion);
-    cargarCampo("metodologia", data.metodologia);
-    cargarCampo("observaciones", data.observaciones);
-    cargarCampo("certificado_calibracion", data.certificadoCalibracion);
-    cargarCampo("plano_croquis", data.planoCroquis);
-
-    // Cargar la imagen en el contenedor principal
-    const contenedorImagenes = document.getElementById("contenedor_imagenes_adjuntas");
-    contenedorImagenes.innerHTML = ""; // Limpiar imágenes anteriores
-
-    if (data.vpsImageUrl) {
-      const img = document.createElement("img");
-      img.src = data.vpsImageUrl;
-      img.style.maxWidth = "200px";
-      img.style.maxHeight = "200px";
-      img.style.border = "1px solid #ccc";
-      img.style.borderRadius = "5px";
-      img.title = "Imagen del registro cargado";
-      contenedorImagenes.appendChild(img);
-    }
-
-    // Habilitar/deshabilitar botones
-    exportarPDFBtn.disabled = false;
-    guardarRegistroBtn.disabled = true;
-
-    // Monitorear cambios en el formulario para habilitar el botón de guardar
-    const formElements = document.querySelectorAll('#exportPDF form input, #exportPDF form select, #exportPDF form textarea');
-    formElements.forEach(el => {
-      el.addEventListener('input', () => {
-        guardarRegistroBtn.disabled = false;
-      }, { once: true });
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      const fecha = data.fechaMedicion.toDate().toLocaleDateString("es-AR");
+      const horaInicio = data.fechaMedicion.toDate().toLocaleTimeString("es-AR", { hour: '2-digit', minute: '2-digit' });
+      const option = document.createElement("option");
+      option.value = doc.id;
+      option.textContent = `${data.razonSocial} - ${fecha} ${horaInicio} - ${data.horaFinalizacion}`;
+      option.dataset.raw = JSON.stringify(data);
+      selectRegistros.appendChild(option);
     });
+    // Después de llenar el select
+      selectRegistros.selectedIndex = -1; // Ninguna opción seleccionada
+    // Si hay más de 10 registros, se muestra scroll
+    // Mostrar siempre al menos 2 filas para que sea clickeable
+      selectRegistros.size = snapshot.size > 10 ? 10 : Math.max(snapshot.size, 2);
 
-    modal.hide();
+
+  } catch (error) {
+    console.error("Error al buscar registros: ", error);
+    alert("Error al consultar Firebase. Probá más tarde.");
+  } finally {
+    loadingIndicator.style.display = 'none';
+  }
+};
+
+// Cargar datos del registro seleccionado en el formulario
+selectRegistros.addEventListener("change", async () => {
+  
+
+  const selectedOption = selectRegistros.options[selectRegistros.selectedIndex];
+  if (!selectedOption || !selectedOption.dataset.raw) return;
+
+  const data = JSON.parse(selectedOption.dataset.raw);
+  data.fechaMedicion = new firebase.firestore.Timestamp(data.fechaMedicion.seconds, data.fechaMedicion.nanoseconds);
+
+  const cargarCampo = (id, valor) => {
+    const el = document.getElementById(id);
+    if (el) el.value = valor || "";
+  };
+
+  cargarCampo("razon_social", data.razonSocial);
+  cargarCampo("cuit", data.cuit);
+  cargarCampo("direccion", data.direccion);
+  cargarCampo("localidad", data.localidad);
+  cargarCampo("cp", data.cp);
+  cargarCampo("provincia", data.provincia);
+  cargarCampo("nombre_profesional", data.nombreProfesional);
+  cargarCampo("apellido_profesional", data.apellidoProfesional);
+  cargarCampo("matricula_profesional", data.matriculaProfesional);
+  cargarCampo("incumbencias_especificas", data.incumbencias);
+  cargarCampo("documentacion_incumbencias", data.documentacionIncumbencias);
+  cargarCampo("rango_kv", data.rangoKv);
+  cargarCampo("pago_matricula", data.pagoMatricula);
+  cargarCampo("seguro_accidentes", data.seguroAccidentes);
+  cargarCampo("pago_seguro", data.pagoSeguro);
+  cargarCampo("marca_instrumento", data.marcaInstrumento);
+  cargarCampo("modelo_instrumento", data.modeloInstrumento);
+  cargarCampo("numero_serie_instrumento", data.numeroSerieInstrumento);
+  cargarCampo("tipo_instrumento", data.tipoInstrumento);
+  cargarCampo("cumple_iec", data.cumpleIec);
+  cargarCampo("certificado_fabricante", data.certificadoFabricante);
+  cargarCampo("condiciones_uso", data.condicionesUso);
+  cargarCampo("hora_inicio", data.fechaMedicion.toDate().toTimeString().slice(0, 5));
+  cargarCampo("fecha_medicion", data.fechaMedicion.toDate().toISOString().split('T')[0]);
+  cargarCampo("hora_finalizacion", data.horaFinalizacion);
+  cargarCampo("metodologia", data.metodologia);
+  cargarCampo("observaciones", data.observaciones);
+  cargarCampo("certificado_calibracion", data.certificadoCalibracion);
+  cargarCampo("plano_croquis", data.planoCroquis);
+
+  const contenedorImagenes = document.getElementById("contenedor_imagenes_adjuntas");
+  contenedorImagenes.innerHTML = "";
+  if (data.vpsImageUrl) {
+    const img = document.createElement("img");
+    img.src = data.vpsImageUrl;
+    img.style.maxWidth = "200px";
+    img.style.maxHeight = "200px";
+    img.style.border = "1px solid #ccc";
+    img.style.borderRadius = "5px";
+    img.title = "Imagen del registro cargado";
+    contenedorImagenes.appendChild(img);
+  }
+
+  exportarPDFBtn.disabled = false;
+  guardarRegistroBtn.disabled = true;
+
+  const formElements = document.querySelectorAll('#exportPDF form input, #exportPDF form select, #exportPDF form textarea');
+  formElements.forEach(el => {
+    el.addEventListener('input', () => {
+      guardarRegistroBtn.disabled = false;
+    }, { once: true });
   });
+
+  modal.hide();
+});
+
 
   function guardarComoPDF() {
     const botones = [exportarPDFBtn, guardarRegistroBtn, abrirModalBtn];
