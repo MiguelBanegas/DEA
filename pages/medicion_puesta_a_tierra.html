@@ -397,7 +397,7 @@
   const fechaHoraInicio = new Date(`${fechaMedicionValue}T${horaInicioValue}`);
   const firestoreTimestamp = firebase.firestore.Timestamp.fromDate(fechaHoraInicio);
 
-  
+    const mapaVpsUrl = await subirImagenMapa(mapaGoogleUrl);  
 
   const protocolo = {
     razonSocial: document.getElementById('razon_social').value,
@@ -434,14 +434,6 @@
     longitud: ubicacionLon || null,
     timestamp: firebase.firestore.FieldValue.serverTimestamp()
   };
-  if (ubicacionLat && ubicacionLon && mapaGoogleUrl) {
-  const mapaVpsUrl = await subirImagenMapa(mapaGoogleUrl);
-
-  protocolo.latitud = ubicacionLat;
-  protocolo.longitud = ubicacionLon;
-  protocolo.mapaUrlVps = mapaVpsUrl || null;
-}
-
   // Timeout para guardar en Firebase
   const agregarConTimeout = (coleccion, data, timeout = 10000) => {
     return Promise.race([
