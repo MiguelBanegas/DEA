@@ -478,7 +478,7 @@
         alert("Tu navegador no soporta geolocalización.");
       }
     }
-    
+
     // Variables globales para almacenar la ubicación
     let ubicacionLat = null;
     let ubicacionLon = null;
@@ -519,7 +519,12 @@
   
     async function subirImagenMapa(urlMapsStatic) {
   try {
-    const resp = await fetch(urlImagen);
+    const resp = await fetch(urlMapsStatic, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'image/png'
+      }
+    });
     const blob = await resp.blob();
 
     const formData = new FormData();
