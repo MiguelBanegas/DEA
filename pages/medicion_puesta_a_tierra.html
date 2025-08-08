@@ -16,7 +16,7 @@
   <div id="exportPDF">
     <form>
       <img src="../img/logoDEA3.jfif" alt="Logo" style="position: absolute; top: 10px; left: 10px; width: 150px;">
-      <h2 class="title">PROTOCOLO DE MEDICIÓN DE LA PUESTA A TIERRA Y CONTINUIDAD DE LAS MASAS</h2>
+      <h2 class="title">Protocolo de Medición de la Puesta a Tierra y Continuidad de las Masas</h2>
 
       <label for="razon_social">Razón Social:</label>
       <input type="text" id="razon_social" name="razon_social" value="razon_social">
@@ -83,6 +83,7 @@
         <option value="Técnico Electromecánico">Técnico Electromecánico</option>
         <option value="Ingeniero eléctrico">Ingeniero eléctrico</option>
         <option value="Ingeniero electromecánico">Ingeniero electromecánico</option>
+        <option value="Otro">Otro (Aclare en Obs y adjunte Doc)</option>
       </select>
 
       <label for="documentacion_incumbencias">Presenta documentación de incumbencias específicas ( Si / No ):</label>
@@ -116,7 +117,7 @@
  </select>
 
       <!-- <hr> -->
-
+<label for="" style="font-size: 9px;">(ste protocolo no tendrá validez legal si no se acredita matrícula habilitante y la incumbencia profesional específica para la tarea declarada.)</label>
       <div class="section-title">DATOS DEL INSTRUMENTO CON EL QUE VAN REALIZAR LAS MEDICIONES</div>
 
       <label for="marca_instrumento">Marca:</label>
@@ -166,7 +167,9 @@
     </select>
   </div>
   <!-- <br>
+   
   <hr> -->
+  <label for="" style="font-size: 9px;">(Este protocolo no tendrá validez legal si el instrumento no cumple con IEC 61557 y/o no se acredita certificado de calibración vigente.)</label>
   <div class="section-title">Datos de la medicion</div>
 
   <div style="display: flex; justify-content: space-between;">
@@ -206,6 +209,10 @@
     <option value="SI">SI</option>
     <option value="NO">NO</option>
   </select>
+  <button type="button" onclick="generarImagenMapa()">Mostrar ubicación</button>
+      <img id="imagenMapa" width="400" height="200" alt="Mapa estático de ubicación" />
+      <br>
+      <a id="linkMapa" target="_blank" style="display: none;">Ver en Google Maps</a>
 
   <div class="seccion-adjuntar-archivo">
   <label>Adjuntar Imagen:</label>
@@ -220,7 +227,7 @@
   <div id="contenedor_imagenes_adjuntas"></div>
 
   <img src="../img/FIRMADIGITAL.png" alt="Firma Digital" style="float: right; margin-right: 160px; width: 160px; height: auto;">
-
+  
     </form>  
   </div>
   <!-- <button onclick="guardarComoPDF()" style="display: block;">Exportar a PDF</button> -->
@@ -390,6 +397,8 @@
   const fechaHoraInicio = new Date(`${fechaMedicionValue}T${horaInicioValue}`);
   const firestoreTimestamp = firebase.firestore.Timestamp.fromDate(fechaHoraInicio);
 
+  
+
   const protocolo = {
     razonSocial: document.getElementById('razon_social').value,
     cuit: document.getElementById('cuit').value,
@@ -420,8 +429,18 @@
     certificadoCalibracion: document.getElementById('certificado_calibracion').value,
     planoCroquis: document.getElementById('plano_croquis').value,
     vpsImageUrl: imageUrl || null,
+    mapaUrlVps: mapaVpsUrl || null,
+    latitud: ubicacionLat || null,
+    longitud: ubicacionLon || null,
     timestamp: firebase.firestore.FieldValue.serverTimestamp()
   };
+  if (ubicacionLat && ubicacionLon && mapaGoogleUrl) {
+  const mapaVpsUrl = await subirImagenMapa(mapaGoogleUrl);
+
+  protocolo.latitud = ubicacionLat;
+  protocolo.longitud = ubicacionLon;
+  protocolo.mapaUrlVps = mapaVpsUrl || null;
+}
 
   // Timeout para guardar en Firebase
   const agregarConTimeout = (coleccion, data, timeout = 10000) => {
@@ -443,6 +462,88 @@
   } finally {
     exportarBtn.disabled = false;
     loadingIndicator.style.display = 'none';
+  }
+}
+
+  function mostrarMapa() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function (position) {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+
+          const mapa = document.getElementById("mapa");
+          const contenedor = document.getElementById("contenedorMapa");
+
+          // Usás la API Embed de Google Maps (requiere API Key si usás "embed/v1/view")
+          mapa.src = `https://maps.google.com/maps?q=${lat},${lon}&z=16&output=embed`;
+
+          contenedor.style.display = "block";
+
+        }, function (error) {
+          alert("No se pudo obtener la ubicación. Asegurate de permitir el acceso.");
+        });
+      } else {
+        alert("Tu navegador no soporta geolocalización.");
+      }
+    }
+    // Variables globales para almacenar la ubicación
+    let ubicacionLat = null;
+    let ubicacionLon = null;
+    let urlInteractiva = null;
+    function generarImagenMapa() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+          const lat = position.coords.latitude.toFixed(6); const lon = position.coords.longitude.toFixed(6);
+          ubicacionLat = lat; ubicacionLon = lon;
+          const zoom = 16;
+          const apiKey = 'AIzaSyAESNgmZ2O6nu3S0z3h8LU8oC67-nPbxhw'; // ⛔️ Reemplazá esto con tu clave real
+
+          const url = `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lon}&zoom=${zoom}&size=400x200&markers=color:red%7C${lat},${lon}&key=${apiKey}`;
+          urlInteractiva = `https://www.google.com/maps/search/?api=1&query=${lat},${lon}`;
+          const imagen = document.getElementById("imagenMapa");
+          imagen.src = url;
+          imagen.style.display = "block";
+
+          imagen.onload = function () {
+              const link = document.getElementById("linkMapa");
+              link.href = urlInteractiva;
+              link.style.display = "inline-block";
+            };
+            imagen.onerror = function () {
+              // Por si falla la carga del mapa
+              link.style.display = "none";
+            };
+
+        }, function(error) {
+          alert("No se pudo obtener tu ubicación.");
+        });
+      } else {
+        alert("Tu navegador no soporta geolocalización.");
+      }
+    }
+  
+    async function subirImagenMapa(urlImagen) {
+  try {
+    const resp = await fetch(urlImagen);
+    const blob = await resp.blob();
+
+    const formData = new FormData();
+    formData.append('image', blob, `mapa_${Date.now()}.png`);
+
+    const response = await fetch('/upload', {
+      method: 'POST',
+      body: formData
+    });
+
+    if (!response.ok) {
+      throw new Error('Error subiendo el mapa al VPS');
+    }
+
+    const result = await response.json();
+    return result.imageUrl; // URL pública en tu VPS
+  } catch (err) {
+    console.error('Error al subir mapa:', err);
+    return null;
   }
 }
 

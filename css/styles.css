@@ -65,7 +65,7 @@
     }
 
     .section-title {
-      background-color: #e0e0e0;
+      background-color: #b0b0b0;
       /* Gray background */
       padding: 10px;
       margin-top: 20px;
@@ -84,9 +84,12 @@
     }
 
     .title {
-      background-color: gray;
+      background-color: black;
+      color: white;
+      padding: 10px;
+      text-align: center;
       /* Gray background */
-      font-size: 15px;
+      font-size: 1.1em;
       font-weight: bold;
       margin-bottom: 10px;
     }
@@ -272,3 +275,17 @@
   border-bottom-left-radius: 12px;
   border-bottom-right-radius: 12px;
 }
+ #imagenMapa {
+      margin-top: 20px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      display: none;
+    }
+    #linkMapa {
+      display: none;
+      margin-top: 10px;
+      display: inline-block;
+      color: blue;
+      text-decoration: underline;
+      font-family: sans-serif;
+    }
