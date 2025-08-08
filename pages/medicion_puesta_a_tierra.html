@@ -517,9 +517,9 @@
       }
     }
   
-    async function subirImagenMapa(urlMapsStatic) {
+    async function subirImagenMapa(urlImagen) {
   try {
-    const resp = await fetch(urlMapsStatic, {
+    const resp = await fetch(urlImagen, {
       method: 'GET',
       headers: {
         'Content-Type': 'image/png'
