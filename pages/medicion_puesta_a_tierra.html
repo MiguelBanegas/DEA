@@ -242,13 +242,13 @@
   </select>
   <span class="error-message" id="plano_croquis_error"></span>
 
-  <button type="button" onclick="generarImagenMapa()">Mostrar ubicación</button>
-      <button type="button" id="abrirModalMapaBtn">Seleccionar ubicación manualmente</button>
+  <button type="button" onclick="generarImagenMapa()" class="no-print">Mostrar ubicación</button>
+      <button type="button" id="abrirModalMapaBtn" class="no-print">Seleccionar ubicación manualmente</button>
       <img id="imagenMapa" width="400" height="200" alt="Mapa estático de ubicación" />
       <br>
       <a id="linkMapa" target="_blank" style="display: none;">Ver en Google Maps</a>
 
-  <div class="seccion-adjuntar-archivo">
+  <div class="seccion-adjuntar-archivo no-print">
   <label>Adjuntar Imagen:</label>
   <div>
     <label for="imagen_adjunta" class="custom-file-upload-button">Elegir archivos</label>
@@ -256,7 +256,7 @@
   </div>
  </div>
 
-  <input type="file" id="imagen_adjunta" name="imagen_adjunta" accept="image/*" multiple>
+  <input type="file" id="imagen_adjunta" name="imagen_adjunta" accept="image/*" multiple class="no-print">
  <div id="imagenes_mostradas"></div>
   <div id="contenedor_imagenes_adjuntas"></div>
 
@@ -265,11 +265,11 @@
     </form>  
   </div>
   <!-- <button onclick="guardarComoPDF()" style="display: block;">Exportar a PDF</button> -->
-  <button id="exportarPDFBtn" class="btn btn-success ms-3 mb-3" onclick="guardarComoPDF()" disabled>Exportar a PDF</button>
-  <button id="guardarRegistroBtn" class="btn btn-info ms-3 mb-3" onclick="guardarProtocolo()">Guardar en Base de Datos</button>
+  <button id="exportarPDFBtn" class="btn btn-success ms-3 mb-3 no-print" onclick="guardarComoPDF()" disabled>Exportar a PDF</button>
+  <button id="guardarRegistroBtn" class="btn btn-info ms-3 mb-3 no-print" onclick="guardarProtocolo()">Guardar en Base de Datos</button>
     <!-- Botón para abrir modal -->
-<button class="btn btn-secondary" id="abrirModalBtn">Buscar y Cargar registro</button>
-<button type="button" class="btn btn-danger ms-3 mb-3" onclick="limpiarFormulario()">Limpiar</button>
+<button class="btn btn-secondary no-print" id="abrirModalBtn">Buscar y Cargar registro</button>
+<button type="button" class="btn btn-danger ms-3 mb-3 no-print" onclick="limpiarFormulario()">Limpiar</button>
 
 
 <!-- Modal -->
@@ -340,6 +340,7 @@
     // Acá asumimos que ya cargaste la librería browser-image-compression:
     async function guardarProtocolo() {
       if (!validarFormulario()) {
+        alert("Por favor, complete todos los campos obligatorios.");
         return;
       }
 
@@ -845,6 +846,9 @@ selectRegistros.addEventListener("change", async () => {
   const data = JSON.parse(selectedOption.dataset.raw);
   data.fechaMedicion = new firebase.firestore.Timestamp(data.fechaMedicion.seconds, data.fechaMedicion.nanoseconds);
 
+  const errorMessages = document.querySelectorAll(".error-message");
+  errorMessages.forEach(msg => msg.textContent = "");
+
   const cargarCampo = (id, valor) => {
     const el = document.getElementById(id);
     if (el) el.value = valor || "";
@@ -927,7 +931,7 @@ selectRegistros.addEventListener("change", async () => {
 
 
   function guardarComoPDF() {
-    const botones = [exportarPDFBtn, guardarRegistroBtn, abrirModalBtn];
+    const botones = document.querySelectorAll(".no-print");
     botones.forEach(btn => btn.style.display = "none");
 
     // Muestra el indicador de carga
@@ -935,7 +939,7 @@ selectRegistros.addEventListener("change", async () => {
     window.scrollTo(0, 0);
     const contenedor = document.getElementById("exportPDF");
     const tabla = document.getElementById("medicionTabla"); // Assuming you have a table with this ID if needed for page breaks
-    contenedor.classList.add("pdf-export", "ocultar-botones");
+    contenedor.classList.add("pdf-export");
     if (tabla) {
       tabla.classList.add("ocultar-eliminar");
     }
@@ -997,7 +1001,7 @@ selectRegistros.addEventListener("change", async () => {
         })
         .save()
         .then(() => {
-          contenedor.classList.remove("pdf-export", "ocultar-botones");
+          contenedor.classList.remove("pdf-export");
           if (tabla) {
             tabla.classList.remove("ocultar-eliminar");
           }
