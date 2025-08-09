@@ -6,7 +6,7 @@
   <link rel="shortcut icon" href="../img/logoDEA3.jfif" type="image/x-icon">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-  <link rel="stylesheet" href="../css/styles.css?v1.1">
+  <link rel="stylesheet" href="../css/styles.css?v1.5">
 
   <title>PROTOCOLO DE MEDICIÓN</title>
   
@@ -331,7 +331,7 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <script src="https://unpkg.com/browser-image-compression@latest/dist/browser-image-compression.js"></script>
   <script src="../js/firebase-config.js"></script>
-  <script src="../js/scripts3.js?v1.1"></script>
+  <script src="../js/scripts3.js?v1.5"></script>
   <script src="../bootstrap-5.3.6-dist/bootstrap-5.3.6-dist/js/bootstrap.bundle.min.js"></script>
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAESNgmZ2O6nu3S0z3h8LU8oC67-nPbxhw&callback=initMap"></script>
   
@@ -605,6 +605,13 @@ function limpiarFormulario() {
   document.getElementById("guardarRegistroBtn").disabled = false;
 }
 
+function formatCuit(cuit) {
+  if (cuit && cuit.length === 11) {
+    return `${cuit.slice(0, 2)}-${cuit.slice(2, 10)}-${cuit.slice(10)}`;
+  }
+  return cuit;
+}
+
 function validarFormulario() {
   let isValid = true;
   const campos = [
@@ -844,7 +851,7 @@ selectRegistros.addEventListener("change", async () => {
   };
 
   cargarCampo("razon_social", data.razonSocial);
-  cargarCampo("cuit", data.cuit);
+  cargarCampo("cuit", formatCuit(data.cuit));
   cargarCampo("direccion", data.direccion);
   cargarCampo("localidad", data.localidad);
   cargarCampo("cp", data.cp);
