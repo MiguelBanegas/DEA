@@ -23,7 +23,7 @@
       <span class="error-message" id="razon_social_error"></span>
 
       <label for="cuit">C.U.I.T.:</label>
-      <input type="text" id="cuit" name="cuit" placeholder="XX-XXXXXXXX-X" required pattern="\d{11}" title="El CUIT debe tener 11 dígitos">
+      <input type="text" id="cuit" name="cuit" placeholder="XX-XXXXXXXX-X" required title="El CUIT debe tener el formato XX-XXXXXXXX-X">
       <span class="error-message" id="cuit_error"></span>
 
       <label for="direccion">Dirección:</label>
@@ -436,7 +436,7 @@ mapaVpsUrl = data.imageUrl;
 
   const protocolo = {
     razonSocial: document.getElementById('razon_social').value,
-    cuit: document.getElementById('cuit').value,
+    cuit: document.getElementById('cuit').value.replace(/-/g, ""),
     direccion: document.getElementById('direccion').value,
     localidad: document.getElementById('localidad').value,
     cp: document.getElementById('cp').value,
@@ -609,7 +609,7 @@ function validarFormulario() {
   let isValid = true;
   const campos = [
     { id: 'razon_social', errorId: 'razon_social_error', message: 'La razón social es obligatoria' },
-    { id: 'cuit', errorId: 'cuit_error', message: 'El CUIT debe tener 11 dígitos', pattern: /^\d{11}$/ },
+    { id: 'cuit', errorId: 'cuit_error', message: 'El CUIT debe tener el formato XX-XXXXXXXX-X', pattern: /^\d{2}-\d{8}-\d{1}$/ },
     { id: 'direccion', errorId: 'direccion_error', message: 'La dirección es obligatoria' },
     { id: 'localidad', errorId: 'localidad_error', message: 'La localidad es obligatoria' },
     { id: 'cp', errorId: 'cp_error', message: 'El código postal es obligatorio' },
@@ -643,7 +643,12 @@ function validarFormulario() {
     const error = document.getElementById(campo.errorId);
     let valid = true;
 
-    if (!input.value) {
+    let value = input.value;
+    if (campo.id === 'cuit') {
+      value = value.replace(/-/g, "");
+    }
+
+    if (!value) {
       valid = false;
     } else if (campo.pattern && !campo.pattern.test(input.value)) {
       valid = false;
