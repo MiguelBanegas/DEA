@@ -14,28 +14,35 @@
 
 <body>
   <div id="exportPDF">
-    <form>
+    <form id="protocoloForm">
       <img src="../img/logoDEA3.jfif" alt="Logo" style="position: absolute; top: 10px; left: 10px; width: 150px;">
       <h2 class="title">Protocolo de Medición de la Puesta a Tierra y Continuidad de las Masas</h2>
 
       <label for="razon_social">Razón Social:</label>
-      <input type="text" id="razon_social" name="razon_social" value="razon_social">
+      <input type="text" id="razon_social" name="razon_social" placeholder="Ingrese la razón social" required>
+      <span class="error-message" id="razon_social_error"></span>
+
       <label for="cuit">C.U.I.T.:</label>
-      <input type="text" id="cuit" name="cuit" value="cuit">
+      <input type="text" id="cuit" name="cuit" placeholder="XX-XXXXXXXX-X" required pattern="\d{11}" title="El CUIT debe tener 11 dígitos">
+      <span class="error-message" id="cuit_error"></span>
+
       <label for="direccion">Dirección:</label>
-      <input type="text" id="direccion" name="direccion" value="direccion">
+      <input type="text" id="direccion" name="direccion" placeholder="Ingrese la dirección" required>
+      <span class="error-message" id="direccion_error"></span>
 
       <label for="localidad">Localidad:</label>
-      <input type="text" id="localidad" name="localidad" value="localidad">
+      <input type="text" id="localidad" name="localidad" placeholder="Ingrese la localidad" required>
+      <span class="error-message" id="localidad_error"></span>
 
       <div style="display: flex; gap: 20px;">
         <div style="flex: 1;">
           <label for="cp">CP:</label>
-          <input type="text" id="cp" name="cp" value="cp">
+          <input type="text" id="cp" name="cp" placeholder="Ingrese el código postal" required>
+          <span class="error-message" id="cp_error"></span>
         </div>
         <div style="flex: 1;">
           <label for="provincia">Provincia:</label>
-          <select id="provincia" name="provincia">
+          <select id="provincia" name="provincia" required>
             <option value="">Seleccionar Provincia</option>
             <option value="Buenos Aires">Buenos Aires</option>
             <option value="Catamarca">Catamarca</option>
@@ -62,6 +69,7 @@
               del Atlántico Sur</option>
             <option value="Tucumán">Tucumán</option>
           </select>
+          <span class="error-message" id="provincia_error"></span>
         </div>
 
       </div>
@@ -69,84 +77,99 @@
       <div class="section-title">DATOS DEL PROFESIONAL QUE VA REALIZAR LAS MEDICIONES</div>
 
       <label for="nombre_profesional">Nombre:</label>
-      <input type="text" id="nombre_profesional" name="nombre_profesional" value="nombre_profesional">
+      <input type="text" id="nombre_profesional" name="nombre_profesional" placeholder="Ingrese el nombre del profesional" required>
+      <span class="error-message" id="nombre_profesional_error"></span>
 
       <label for="apellido_profesional">Apellido:</label>
-      <input type="text" id="apellido_profesional" name="apellido_profesional" value="apellido_profesional">
+      <input type="text" id="apellido_profesional" name="apellido_profesional" placeholder="Ingrese el apellido del profesional" required>
+      <span class="error-message" id="apellido_profesional_error"></span>
 
       <label for="matricula_profesional">Matrícula N°:</label>
-      <input type="text" id="matricula_profesional" name="matricula_profesional" value="matricula_profesional">
+      <input type="text" id="matricula_profesional" name="matricula_profesional" placeholder="Ingrese la matrícula" required>
+      <span class="error-message" id="matricula_profesional_error"></span>
 
       <label for="incumbencias_electricidad">Posee incumbencias específicas en electricidad (si /no ):</label>
-      <select id="incumbencias_especificas" name="incumbencias_especificas">
+      <select id="incumbencias_especificas" name="incumbencias_especificas" required>
         <option value="Técnico eléctrico">Técnico eléctrico</option>
         <option value="Técnico Electromecánico">Técnico Electromecánico</option>
         <option value="Ingeniero eléctrico">Ingeniero eléctrico</option>
         <option value="Ingeniero electromecánico">Ingeniero electromecánico</option>
         <option value="Otro">Otro (Aclare en Obs y adjunte Doc)</option>
       </select>
+      <span class="error-message" id="incumbencias_especificas_error"></span>
 
       <label for="documentacion_incumbencias">Presenta documentación de incumbencias específicas ( Si / No ):</label>
-      <select id="documentacion_incumbencias" name="documentacion_incumbencias">
+      <select id="documentacion_incumbencias" name="documentacion_incumbencias" required>
         <option value="SI">SI</option>
         <option value="NO">NO</option>
       </select>
+      <span class="error-message" id="documentacion_incumbencias_error"></span>
+
       <label for="rango_kv">Hasta que rango de KV (13,2 KV técnicos / mas de 13,2 KV inges.):</label>
-      <select id="rango_kv" name="rango_kv">
+      <select id="rango_kv" name="rango_kv" required>
         <option value="13.2">13,2 KV técnicos</option>
         <option value="mas_13.2">mas de 13,2 KV inges.</option>
       </select>
+      <span class="error-message" id="rango_kv_error"></span>
 
       <label for="pago_matricula">Presenta documentaci&oacute;n de pago de matr&iacute;cula al d&iacute;a ( si / no
         ):</label>
-      <select id="pago_matricula" name="pago_matricula">
+      <select id="pago_matricula" name="pago_matricula" required>
         <option value="SI">SI</option>
         <option value="NO">NO</option>
       </select>
+      <span class="error-message" id="pago_matricula_error"></span>
 
       <label for="seguro_accidentes">¿Posee seguro de accidentes personales? ( SI / NO ):</label>
- <select id="seguro_accidentes" name="seguro_accidentes">
+ <select id="seguro_accidentes" name="seguro_accidentes" required>
  <option value="SI">SI</option>
  <option value="NO">NO</option>
  </select>
+ <span class="error-message" id="seguro_accidentes_error"></span>
 
  <label for="pago_seguro">¿Presenta la documentación de pago al día del seguro de accidentes personales? ( Si / No ):</label>
- <select id="pago_seguro" name="pago_seguro">
+ <select id="pago_seguro" name="pago_seguro" required>
  <option value="SI">SI</option>
  <option value="NO">NO</option>
  </select>
+ <span class="error-message" id="pago_seguro_error"></span>
 
       <!-- <hr> -->
 <label for="" style="font-size: 9px;">(ste protocolo no tendrá validez legal si no se acredita matrícula habilitante y la incumbencia profesional específica para la tarea declarada.)</label>
       <div class="section-title">DATOS DEL INSTRUMENTO CON EL QUE VAN REALIZAR LAS MEDICIONES</div>
 
       <label for="marca_instrumento">Marca:</label>
-      <input type="text" id="marca_instrumento" name="marca_instrumento" value="marca_instrumento">
+      <input type="text" id="marca_instrumento" name="marca_instrumento" placeholder="Ingrese la marca del instrumento" required>
+      <span class="error-message" id="marca_instrumento_error"></span>
 
       <label for="modelo_instrumento">Modelo:</label>
-      <input type="text" id="modelo_instrumento" name="modelo_instrumento" value="modelo_instrumento">
+      <input type="text" id="modelo_instrumento" name="modelo_instrumento" placeholder="Ingrese el modelo del instrumento" required>
+      <span class="error-message" id="modelo_instrumento_error"></span>
 
       <label for="numero_serie_instrumento">Numero de serie:</label>
-      <input type="text" id="numero_serie_instrumento" name="numero_serie_instrumento" value="numero_serie_instrumento">
+      <input type="text" id="numero_serie_instrumento" name="numero_serie_instrumento" placeholder="Ingrese el número de serie" required>
+      <span class="error-message" id="numero_serie_instrumento_error"></span>
 
       <div style="display: flex; gap: 20px;">
         <div style="flex: 1;">
           <label for="tipo_instrumento">Tipo ( MFT / Telurímetro / Probador de IDs / MFT de PAT / Otro
             ):</label>
-          <select id="tipo_instrumento" name="tipo_instrumento">
+          <select id="tipo_instrumento" name="tipo_instrumento" required>
             <option value="MFT">MFT</option>
             <option value="Telurímetro">Telurímetro</option>
             <option value="Probador de IDs">Probador de IDs</option>
             <option value="MFT de PAT">MFT de PAT</option>
             <option value="Otro">Otro</option>
           </select>
+          <span class="error-message" id="tipo_instrumento_error"></span>
         </div>
         <div style="flex: 1;">
           <label for="cumple_iec">Cumple con IEC 61557 ( Si / No ):</label>
-          <select id="cumple_iec" name="cumple_iec">
+          <select id="cumple_iec" name="cumple_iec" required>
             <option value="SI">SI</option>
             <option value="NO">NO</option>
           </select>
+          <span class="error-message" id="cumple_iec_error"></span>
         </div>
       </div>
       <div style="display: flex; gap: 20px;">
@@ -154,17 +177,19 @@
   
   <div style="flex-grow: 1; margin-right: 10px;">
     <label for="certificado_fabricante">Posee certificado de calibraci&oacute;n del fabricante ( Si / No ):</label>
-    <select id="certificado_fabricante" name="certificado_fabricante" style="width: 100%;">
+    <select id="certificado_fabricante" name="certificado_fabricante" style="width: 100%;" required>
       <option value="SI">SI</option>
       <option value="NO">NO</option>
     </select>
+    <span class="error-message" id="certificado_fabricante_error"></span>
   </div>
   <div style="flex-grow: 1;">
     <label for="condiciones_uso">El instrumento se encuentra en condiciones de uso igual a nuevo ( Si / No ):</label>
-    <select id="condiciones_uso" name="condiciones_uso" style="width: 100%;">
+    <select id="condiciones_uso" name="condiciones_uso" style="width: 100%;" required>
       <option value="SI">SI</option>
       <option value="NO">NO</option>
     </select>
+    <span class="error-message" id="condiciones_uso_error"></span>
   </div>
   <!-- <br>
    
@@ -175,40 +200,48 @@
   <div style="display: flex; justify-content: space-between;">
     <div style="flex-grow: 1; margin-right: 10px;">
       <label for="fecha_medicion">Fecha de la medici&oacute;n:</label>
-      <input type="date" id="fecha_medicion" name="fecha_medicion">
+      <input type="date" id="fecha_medicion" name="fecha_medicion" required>
+      <span class="error-message" id="fecha_medicion_error"></span>
     </div>
     <div style="flex-grow: 1; margin-right: 10px;">
       <label for="hora_inicio">Hora de inicio:</label>
-      <input type="time" id="hora_inicio" name="hora_inicio">
+      <input type="time" id="hora_inicio" name="hora_inicio" required>
+      <span class="error-message" id="hora_inicio_error"></span>
     </div>
     <div style="flex-grow: 1;">
       <label for="hora_finalizacion">Hora finalización:</label>
-      <input type="time" id="hora_finalizacion" name="hora_finalizacion">
+      <input type="time" id="hora_finalizacion" name="hora_finalizacion" required>
+      <span class="error-message" id="hora_finalizacion_error"></span>
     </div>
   </div>
 
 
 
   <label for="metodologia">Metodología utilizada:</label>
-  <textarea id="metodologia" name="metodologia"></textarea>
+  <textarea id="metodologia" name="metodologia" placeholder="Describa la metodología utilizada" required></textarea>
+  <span class="error-message" id="metodologia_error"></span>
 
 
   <label for="observaciones">Observaciones:</label>
-  <textarea id="observaciones" name="observaciones"></textarea>
+  <textarea id="observaciones" name="observaciones" placeholder="Ingrese las observaciones"></textarea>
+
   <!-- <hr> -->
   <div class="section-title">Documentación que se Adjunta a la Medición</div>
 
   <label for="certificado_calibracion">Certificado de Calibración:</label>
-  <select id="certificado_calibracion" name="certificado_calibracion">
+  <select id="certificado_calibracion" name="certificado_calibracion" required>
     <option value="SI">SI</option>
     <option value="NO">NO</option>
   </select>
+  <span class="error-message" id="certificado_calibracion_error"></span>
 
   <label for="plano_croquis">Plano o croquis:</label>
-  <select id="plano_croquis" name="plano_croquis">
+  <select id="plano_croquis" name="plano_croquis" required>
     <option value="SI">SI</option>
     <option value="NO">NO</option>
   </select>
+  <span class="error-message" id="plano_croquis_error"></span>
+
   <button type="button" onclick="generarImagenMapa()">Mostrar ubicación</button>
       <button type="button" id="abrirModalMapaBtn">Seleccionar ubicación manualmente</button>
       <img id="imagenMapa" width="400" height="200" alt="Mapa estático de ubicación" />
@@ -236,6 +269,8 @@
   <button id="guardarRegistroBtn" class="btn btn-info ms-3 mb-3" onclick="guardarProtocolo()">Guardar en Base de Datos</button>
     <!-- Botón para abrir modal -->
 <button class="btn btn-secondary" id="abrirModalBtn">Buscar y Cargar registro</button>
+<button type="button" class="btn btn-danger ms-3 mb-3" onclick="limpiarFormulario()">Limpiar</button>
+
 
 <!-- Modal -->
 
@@ -304,41 +339,16 @@
   <script>
     // Acá asumimos que ya cargaste la librería browser-image-compression:
     async function guardarProtocolo() {
+      if (!validarFormulario()) {
+        return;
+      }
+
   const exportarBtn = document.getElementById('exportarPDFBtn');
   const loadingIndicator = document.getElementById('loading-indicator');
   exportarBtn.disabled = true;
   loadingIndicator.style.display = 'block';
 
   const MAX_SIZE_MB = 10;
-
-  const camposRequeridos = [
-    { id: 'razon_social', nombre: 'Razón Social' },
-    { id: 'cuit', nombre: 'CUIT' },
-    { id: 'direccion', nombre: 'Dirección' },
-    { id: 'localidad', nombre: 'Localidad' },
-    { id: 'provincia', nombre: 'Provincia' },
-    { id: 'nombre_profesional', nombre: 'Nombre del Profesional' },
-    { id: 'apellido_profesional', nombre: 'Apellido del Profesional' },
-    { id: 'matricula_profesional', nombre: 'Matrícula del Profesional' },
-    { id: 'marca_instrumento', nombre: 'Marca del Instrumento' },
-    { id: 'modelo_instrumento', nombre: 'Modelo del Instrumento' },
-    { id: 'numero_serie_instrumento', nombre: 'Número de Serie del Instrumento' },
-    { id: 'fecha_medicion', nombre: 'Fecha de Medición' },
-    { id: 'hora_inicio', nombre: 'Hora de Inicio' },
-    { id: 'hora_finalizacion', nombre: 'Hora de Finalización' }
-  ];
-
-  // Validación de campos
-  for (const campo of camposRequeridos) {
-    const input = document.getElementById(campo.id);
-    if (!input.value.trim()) {
-      alert(`Por favor, completa el campo "${campo.nombre}".`);
-      input.focus();
-      exportarBtn.disabled = false;
-      loadingIndicator.style.display = 'none';
-      return;
-    }
-  }
 
   const fileInput = document.getElementById('imagen_adjunta');
   let file = fileInput.files[0];
@@ -573,6 +583,81 @@ async function subirImagenMapa(urlImagen) {
     console.error('Error al subir mapa:', err);
     return null;
   }
+}
+
+function limpiarFormulario() {
+  document.getElementById("protocoloForm").reset();
+
+  const fechaInput = document.getElementById("fecha_medicion");
+  if (fechaInput) {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
+    fechaInput.value = `${year}-${month}-${day}`;
+  }
+
+  document.getElementById("imagenMapa").style.display = "none";
+  document.getElementById("linkMapa").style.display = "none";
+  document.getElementById("contenedor_imagenes_adjuntas").innerHTML = "";
+
+  document.getElementById("exportarPDFBtn").disabled = true;
+  document.getElementById("guardarRegistroBtn").disabled = false;
+}
+
+function validarFormulario() {
+  let isValid = true;
+  const campos = [
+    { id: 'razon_social', errorId: 'razon_social_error', message: 'La razón social es obligatoria' },
+    { id: 'cuit', errorId: 'cuit_error', message: 'El CUIT debe tener 11 dígitos', pattern: /^\d{11}$/ },
+    { id: 'direccion', errorId: 'direccion_error', message: 'La dirección es obligatoria' },
+    { id: 'localidad', errorId: 'localidad_error', message: 'La localidad es obligatoria' },
+    { id: 'cp', errorId: 'cp_error', message: 'El código postal es obligatorio' },
+    { id: 'provincia', errorId: 'provincia_error', message: 'La provincia es obligatoria' },
+    { id: 'nombre_profesional', errorId: 'nombre_profesional_error', message: 'El nombre del profesional es obligatorio' },
+    { id: 'apellido_profesional', errorId: 'apellido_profesional_error', message: 'El apellido del profesional es obligatorio' },
+    { id: 'matricula_profesional', errorId: 'matricula_profesional_error', message: 'La matrícula es obligatoria' },
+    { id: 'incumbencias_especificas', errorId: 'incumbencias_especificas_error', message: 'Las incumbencias son obligatorias' },
+    { id: 'documentacion_incumbencias', errorId: 'documentacion_incumbencias_error', message: 'La documentación de incumbencias es obligatoria' },
+    { id: 'rango_kv', errorId: 'rango_kv_error', message: 'El rango de KV es obligatorio' },
+    { id: 'pago_matricula', errorId: 'pago_matricula_error', message: 'El pago de matrícula es obligatorio' },
+    { id: 'seguro_accidentes', errorId: 'seguro_accidentes_error', message: 'El seguro de accidentes es obligatorio' },
+    { id: 'pago_seguro', errorId: 'pago_seguro_error', message: 'El pago del seguro es obligatorio' },
+    { id: 'marca_instrumento', errorId: 'marca_instrumento_error', message: 'La marca del instrumento es obligatoria' },
+    { id: 'modelo_instrumento', errorId: 'modelo_instrumento_error', message: 'El modelo del instrumento es obligatorio' },
+    { id: 'numero_serie_instrumento', errorId: 'numero_serie_instrumento_error', message: 'El número de serie es obligatorio' },
+    { id: 'tipo_instrumento', errorId: 'tipo_instrumento_error', message: 'El tipo de instrumento es obligatorio' },
+    { id: 'cumple_iec', errorId: 'cumple_iec_error', message: 'Debe indicar si cumple con IEC 61557' },
+    { id: 'certificado_fabricante', errorId: 'certificado_fabricante_error', message: 'Debe indicar si posee certificado del fabricante' },
+    { id: 'condiciones_uso', errorId: 'condiciones_uso_error', message: 'Debe indicar las condiciones de uso' },
+    { id: 'fecha_medicion', errorId: 'fecha_medicion_error', message: 'La fecha de medición es obligatoria' },
+    { id: 'hora_inicio', errorId: 'hora_inicio_error', message: 'La hora de inicio es obligatoria' },
+    { id: 'hora_finalizacion', errorId: 'hora_finalizacion_error', message: 'La hora de finalización es obligatoria' },
+    { id: 'metodologia', errorId: 'metodologia_error', message: 'La metodología es obligatoria' },
+    { id: 'certificado_calibracion', errorId: 'certificado_calibracion_error', message: 'Debe indicar si se adjunta certificado de calibración' },
+    { id: 'plano_croquis', errorId: 'plano_croquis_error', message: 'Debe indicar si se adjunta plano o croquis' },
+  ];
+
+  campos.forEach(campo => {
+    const input = document.getElementById(campo.id);
+    const error = document.getElementById(campo.errorId);
+    let valid = true;
+
+    if (!input.value) {
+      valid = false;
+    } else if (campo.pattern && !campo.pattern.test(input.value)) {
+      valid = false;
+    }
+
+    if (!valid) {
+      error.textContent = campo.message;
+      isValid = false;
+    } else {
+      error.textContent = '';
+    }
+  });
+
+  return isValid;
 }
 
 function initMap() {
