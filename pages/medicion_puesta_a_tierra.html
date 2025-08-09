@@ -5,8 +5,12 @@
   <meta charset="UTF-8" />
   <link rel="shortcut icon" href="../img/logoDEA3.jfif" type="image/x-icon">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Deshabilitar caché para la página principal -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-  <link rel="stylesheet" href="../css/styles.css?v1.5">
+  <link rel="stylesheet" href="../css/styles.css?v=1.6">
 
   <title>PROTOCOLO DE MEDICIÓN</title>
   
@@ -74,7 +78,7 @@
 
       </div>
           <!-- <hr> -->
-      <div class="section-title">DATOS DEL PROFESIONAL QUE VA REALIZAR LAS MEDICIONES</div>
+      <div class="section-title">Datos del Profesional que realizará las mediciones</div>
 
       <label for="nombre_profesional">Nombre:</label>
       <input type="text" id="nombre_profesional" name="nombre_profesional" placeholder="Ingrese el nombre del profesional" required>
@@ -100,8 +104,8 @@
 
       <label for="documentacion_incumbencias">Presenta documentación de incumbencias específicas ( Si / No ):</label>
       <select id="documentacion_incumbencias" name="documentacion_incumbencias" required>
-        <option value="SI">SI</option>
-        <option value="NO">NO</option>
+        <option value="SI">Si</option>
+        <option value="NO">No</option>
       </select>
       <span class="error-message" id="documentacion_incumbencias_error"></span>
 
@@ -115,28 +119,28 @@
       <label for="pago_matricula">Presenta documentaci&oacute;n de pago de matr&iacute;cula al d&iacute;a ( si / no
         ):</label>
       <select id="pago_matricula" name="pago_matricula" required>
-        <option value="SI">SI</option>
-        <option value="NO">NO</option>
+        <option value="Si">Si</option>
+        <option value="No">No</option>
       </select>
       <span class="error-message" id="pago_matricula_error"></span>
 
-      <label for="seguro_accidentes">¿Posee seguro de accidentes personales? ( SI / NO ):</label>
+      <label for="seguro_accidentes">¿Posee seguro de accidentes personales? ( Si / No ):</label>
  <select id="seguro_accidentes" name="seguro_accidentes" required>
- <option value="SI">SI</option>
- <option value="NO">NO</option>
+ <option value="Si">Si</option>
+ <option value="No">No</option>
  </select>
  <span class="error-message" id="seguro_accidentes_error"></span>
 
  <label for="pago_seguro">¿Presenta la documentación de pago al día del seguro de accidentes personales? ( Si / No ):</label>
  <select id="pago_seguro" name="pago_seguro" required>
- <option value="SI">SI</option>
- <option value="NO">NO</option>
+ <option value="Si">Si</option>
+ <option value="No">No</option>
  </select>
  <span class="error-message" id="pago_seguro_error"></span>
 
       <!-- <hr> -->
 <label for="" style="font-size: 9px;">(ste protocolo no tendrá validez legal si no se acredita matrícula habilitante y la incumbencia profesional específica para la tarea declarada.)</label>
-      <div class="section-title">DATOS DEL INSTRUMENTO CON EL QUE VAN REALIZAR LAS MEDICIONES</div>
+      <div class="section-title">Datos de instrumento con el que se realizará las mediciones</div>
 
       <label for="marca_instrumento">Marca:</label>
       <input type="text" id="marca_instrumento" name="marca_instrumento" placeholder="Ingrese la marca del instrumento" required>
@@ -166,8 +170,8 @@
         <div style="flex: 1;">
           <label for="cumple_iec">Cumple con IEC 61557 ( Si / No ):</label>
           <select id="cumple_iec" name="cumple_iec" required>
-            <option value="SI">SI</option>
-            <option value="NO">NO</option>
+            <option value="Si">Si</option>
+            <option value="No">No</option>
           </select>
           <span class="error-message" id="cumple_iec_error"></span>
         </div>
@@ -178,16 +182,16 @@
   <div style="flex-grow: 1; margin-right: 10px;">
     <label for="certificado_fabricante">Posee certificado de calibraci&oacute;n del fabricante ( Si / No ):</label>
     <select id="certificado_fabricante" name="certificado_fabricante" style="width: 100%;" required>
-      <option value="SI">SI</option>
-      <option value="NO">NO</option>
+      <option value="Si">Si</option>
+      <option value="No">No</option>
     </select>
     <span class="error-message" id="certificado_fabricante_error"></span>
   </div>
   <div style="flex-grow: 1;">
     <label for="condiciones_uso">El instrumento se encuentra en condiciones de uso igual a nuevo ( Si / No ):</label>
     <select id="condiciones_uso" name="condiciones_uso" style="width: 100%;" required>
-      <option value="SI">SI</option>
-      <option value="NO">NO</option>
+      <option value="Si">Si</option>
+      <option value="No">No</option>
     </select>
     <span class="error-message" id="condiciones_uso_error"></span>
   </div>
@@ -230,15 +234,15 @@
 
   <label for="certificado_calibracion">Certificado de Calibración:</label>
   <select id="certificado_calibracion" name="certificado_calibracion" required>
-    <option value="SI">SI</option>
-    <option value="NO">NO</option>
+    <option value="Si">Si</option>
+    <option value="No">No</option>
   </select>
   <span class="error-message" id="certificado_calibracion_error"></span>
 
   <label for="plano_croquis">Plano o croquis:</label>
   <select id="plano_croquis" name="plano_croquis" required>
-    <option value="SI">SI</option>
-    <option value="NO">NO</option>
+    <option value="Si">Si</option>
+    <option value="No">No</option>
   </select>
   <span class="error-message" id="plano_croquis_error"></span>
 
@@ -331,7 +335,7 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <script src="https://unpkg.com/browser-image-compression@latest/dist/browser-image-compression.js"></script>
   <script src="../js/firebase-config.js"></script>
-  <script src="../js/scripts3.js?v1.5"></script>
+  <script src="../js/scripts3.js?v=1.6"></script>
   <script src="../bootstrap-5.3.6-dist/bootstrap-5.3.6-dist/js/bootstrap.bundle.min.js"></script>
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAESNgmZ2O6nu3S0z3h8LU8oC67-nPbxhw&callback=initMap"></script>
   
@@ -934,6 +938,9 @@ selectRegistros.addEventListener("change", async () => {
     const botones = document.querySelectorAll(".no-print");
     botones.forEach(btn => btn.style.display = "none");
 
+    const errorMessages = document.querySelectorAll(".error-message");
+    errorMessages.forEach(msg => msg.style.display = "none");
+
     // Muestra el indicador de carga
     document.getElementById('loading-indicator').style.display = 'block';
     window.scrollTo(0, 0);
@@ -1008,6 +1015,7 @@ selectRegistros.addEventListener("change", async () => {
           fechaDiv.remove(); // Quita la fecha/hora del DOM
           document.getElementById('loading-indicator').style.display = 'none';
           botones.forEach(btn => btn.style.display = "");
+          errorMessages.forEach(msg => msg.style.display = "");
         });
     }, 350); // Use a small delay to ensure DOM updates
   }

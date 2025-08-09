@@ -1,4 +1,4 @@
-    body {
+body {
       
   min-width: 0 !important;
   box-sizing: border-box !important;
@@ -46,7 +46,6 @@
       resize: vertical;
       /* Allow vertical resizing */
       box-sizing: border-box;
-      text-transform: uppercase;
       font-size: 10px;
     }
 
