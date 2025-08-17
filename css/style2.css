@@ -1,0 +1,107 @@
+/* Estilos generales */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f4f7f9;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 98%;
+    margin: 0 auto;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+/* Estilo del encabezado principal */
+header h1 {
+    background-color: #000000;
+    color: #ffffff;
+    padding: 15px;
+    font-size: 1.5em;
+    text-align: center;
+    border-radius: 6px;
+    margin: 0 0 20px 0;
+}
+
+/* Contenedor de la tabla para permitir scroll horizontal en pantallas pequeñas */
+.table-container {
+    overflow-x: auto;
+}
+
+/* Estilos de la tabla */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9em;
+}
+
+th, td {
+    border: 1px solid #dcdfe2;
+    padding: 10px 12px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* Estilos para el encabezado de la tabla */
+thead th {
+    background-color: #e9ecef;
+    font-weight: 600;
+    position: sticky;
+    top: 0; /* Para que el encabezado se quede fijo al hacer scroll */
+    z-index: 10;
+}
+
+/* Celdas editables */
+tbody td {
+    background-color: #fff;
+    min-width: 80px; /* Ancho mínimo para las celdas de datos */
+}
+
+tbody td:first-child {
+    background-color: #f8f9fa;
+    font-weight: bold;
+    min-width: 40px;
+}
+
+/* Permite editar el contenido de las celdas */
+td[contenteditable="true"]:focus {
+    outline: 2px solid #007bff;
+    background-color: #e8f0fe;
+    box-shadow: 0 0 5px rgba(0,123,255,0.5);
+}
+
+/* Estilos para los botones de acción */
+.actions {
+    margin-bottom: 20px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 1em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+    color: #fff;
+    transition: background-color 0.2s;
+}
+
+#addRowBtn {
+    background-color: #28a745; /* Verde */
+}
+
+#addRowBtn:hover {
+    background-color: #218838;
+}
+
+#removeRowBtn {
+    background-color: #dc3545; /* Rojo */
+}
+
+#removeRowBtn:hover {
+    background-color: #c82333;
+}

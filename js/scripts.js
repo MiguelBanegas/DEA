@@ -23,6 +23,13 @@ window.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+function recontarNumeros() {
+  const tabla = document.getElementById("medicionTabla").getElementsByTagName("tbody")[0];
+  for (let i = 0; i < tabla.rows.length; i++) {
+    tabla.rows[i].cells[0].textContent = i + 1;
+  }
+}
+
 function agregarFila() {
   const tabla = document
     .getElementById("medicionTabla")
@@ -125,18 +132,13 @@ function agregarFila() {
     }
   }
 
-  // Botón para eliminar fila
-  const celdaEliminar = fila.insertCell(11);
-  const botonEliminar = document.createElement("button");
-  botonEliminar.innerText = "Eliminar";
-  // botonEliminar.className = "btn btn-danger btn-sm";
-  botonEliminar.onclick = () => {
-    if (confirm("¿Estás seguro de eliminar esta fila?")) {
-      fila.remove();
-      recontarNumeros();
-    }
-  };
-  celdaEliminar.appendChild(botonEliminar);
+  // Celda para el checkbox
+  const celdaCheckbox = fila.insertCell(11);
+  const checkbox = document.createElement("input");
+  checkbox.type = "checkbox";
+  checkbox.className = "form-check-input";
+  celdaCheckbox.appendChild(checkbox);
+
 
   // Pone el foco en la primera celda editable
   setTimeout(() => {

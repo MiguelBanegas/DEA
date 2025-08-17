@@ -293,6 +293,16 @@
       #medicionTabla thead th a:hover {
         color: #ffe082 !important; /* Color al pasar el mouse, opcional */
       }
+      /* Anchos de columna para la tabla principal en pantalla */
+      #medicionTabla th:nth-child(1) { width: 4%; } /* 22 */
+      #medicionTabla th:nth-child(2) { width: 16%; } /* 23 */
+      #medicionTabla th:nth-child(3) { width: 22%; } /* 24 */
+      #medicionTabla th:nth-child(4) { width: 22%; } /* 25 */
+      #medicionTabla th:nth-child(5) { width: 7%; } /* 26 */
+      #medicionTabla th:nth-child(6) { width: 8%; } /* 27-28 */
+      #medicionTabla th:nth-child(7) { width: 8%; } /* 29-30 */
+      #medicionTabla th:nth-child(8) { width: 8%; } /* 31 */
+      #medicionTabla th:nth-child(9) { width: 7%; } /* 32 */
     </style>
   </head>
   <body>
@@ -701,9 +711,9 @@
         <button class="btn btn-primary ms-3 mb-3" onclick="agregarFila()">
           Agregar Fila
         </button>
-       <!--  <button class="btn btn-success ms-3 mb-3 onclick="guardarComoPDF()">
-          Guardar como PDF
-        </button> -->
+        <button class="btn btn-danger ms-3 mb-3" onclick="eliminarFilasSeleccionadas()">
+          Eliminar Seleccionados
+        </button>
         <button class="btn btn-success ms-3 mb-3" onclick="guardarComoPDF()">Exportar a PDF</button>
         <button class="btn btn-info ms-3 mb-3" onclick="guardarEnFirebase()">Guardar en Firebase</button>
   
@@ -839,9 +849,29 @@
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-    <script src="../js/firebase-config.js"></script>
+        <script src="../js/firebase-config.js"></script>
     
     <script>
+      function eliminarFilasSeleccionadas() {
+        const tabla = document.getElementById("medicionTabla").getElementsByTagName("tbody")[0];
+        const filas = tabla.querySelectorAll("tr");
+        const filasAEliminar = [];
+
+        filas.forEach(fila => {
+          const checkbox = fila.querySelector("input[type='checkbox']");
+          if (checkbox && checkbox.checked) {
+            filasAEliminar.push(fila);
+          }
+        });
+
+        if (filasAEliminar.length > 0 && confirm(`¿Estás seguro de eliminar ${filasAEliminar.length} fila(s) seleccionada(s)?`)) {
+          filasAEliminar.forEach(fila => {
+            fila.remove();
+          });
+          recontarNumeros();
+        }
+      }
+
       function guardarEnFirebase() {
         // Validación de campos
         const camposRequeridos = [

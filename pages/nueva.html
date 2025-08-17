@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Protocolo de Prueba de Interruptores Diferenciales</title>
+    <link rel="stylesheet" href="../css/style2.css">
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Protocolo de prueba de Interruptores Diferenciales – RES 900/15 S.R.T.</h1>
+        </header>
+
+        <div class="actions">
+            <button id="addRowBtn">Añadir Fila</button>
+            <button id="removeRowBtn">Eliminar Última Fila</button>
+        </div>
+
+        <div class="table-container">
+            <table id="protocolTable">
+                <thead>
+                    <tr>
+                        <th rowspan="2">N°</th>
+                        <th rowspan="2">Identificación del Tablero Eléctrico</th>
+                        <th rowspan="2">Identificación del Interruptor Diferencial</th>
+                        <th rowspan="2">Marca</th>
+                        <th rowspan="2">N° polos</th>
+                        <th rowspan="2">Clase</th>
+                        <th rowspan="2">In [A]</th>
+                        <th rowspan="2">IΔn [mA]</th>
+                        <th rowspan="2">Sector</th>
+                        <th colspan="2">x1/2</th>
+                        <th colspan="2">x1</th>
+                        <th colspan="2">x2</th>
+                        <th colspan="2">x5</th>
+                        <th colspan="2">Auto rampa</th>
+                        <th rowspan="2">Estado del Interruptor Diferencial</th>
+                    </tr>
+                    <tr>
+                        <th>0°</th>
+                        <th>180°</th>
+                        <th>0°</th>
+                        <th>180°</th>
+                        <th>0°</th>
+                        <th>180°</th>
+                        <th>0°</th>
+                        <th>180°</th>
+                        <th>t [ms]</th>
+                        <th>I [mA]</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Las filas se generarán aquí con JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="../js/script5.js"></script>
+
+</body>
+</html>
